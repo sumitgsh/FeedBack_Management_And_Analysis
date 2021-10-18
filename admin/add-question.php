@@ -15,9 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Connection failed: " . $conn->connect_error);
     } else {
         if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employeer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
+            echo "error";
             die();
         } else {
-            // $alumni = $employeer = $parent = $student = $teacher = "";
             $question = $_POST["question"];
             $question_Type = $_POST["question_Type"];
             $alumni =  isset($_POST['alumni']) ? $_POST["alumni"] : "";
@@ -30,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             try {
                 $sql = "INSERT INTO `question`(`question`, `question_Type`) VALUES ('$question','$question_Type')";
                 $conn->query($sql);
-
                 $id = $conn->insert_id;;
                 foreach ($a as $value) {
                     if (!empty($value)) {
@@ -38,10 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $conn->query($sql);
                     }
                 }
-                echo "hoho";
+                echo "Qustion Added";
             } catch (Exception $e) {
                 //throw $th;
                 echo $e;
+                echo "exp";
             }
         }
     }
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <label for="question">Question</label><br>
-        <textarea id="question" name="question" rows="4" cols="50"></textarea><br>
+        <textarea id="question" name="question" rows="4" cols="50" required></textarea><br>
         <label for="question_Type">Question Type</label><br>
         <select name="question_Type" id="question_Type">
             <option value="rating">Rating</option>
