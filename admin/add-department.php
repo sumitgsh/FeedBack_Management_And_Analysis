@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Department</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 </head>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -32,13 +34,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <body>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="department_Id">Department Id</label><br>
-        <input type="text" name="department_Id" required><br>
-        <label for="department_Name">Department Name</label><br>
-        <input type="text" name="department_Name" required><br>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Add Department</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="department_Id">Department Id</label><br>
+                                    <input type="text" class="form-control" name="department_Id" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="department_Name">Department Name</label>
+                                    <input type="text" class="form-control" name="department_Name" required>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
 </body>
 
 </html>
