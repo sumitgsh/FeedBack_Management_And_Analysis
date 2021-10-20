@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Teacher</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
 </head>
 
 <?php
@@ -37,45 +40,76 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <body>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="teacher_Id">Teacher Id</label>
-        <br>
-        <input type="text" name="teacher_Id" required>
-        <br>
-        <label for="name">Name</label>
-        <br>
-        <input type="text" name="name" required>
-        <br>
-        <label for="email">Email</label>
-        <br>
-        <input type="email" name="email" required>
-        <br>
-        <label for="department">Department</label>
-        <br>
-        <select name="department" id="department">
-            <?php
-            include '../includes/conn.php';
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            } else {
-                $sql = "SELECT `department_Id`, `name` FROM `department`";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
-                    }
-                }
-            }
-            ?>
-        </select><br>
-        <label for="role">Role</label>
-        <br>
-        <select name="role" id="role">
-            <option value="teacher">Teacher</option>
-            <option value="hod">HOD</option>
-        </select><br>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Add Teacher</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="teacher_Id">Teacher Id</label>
+                                    <input type="text" class="form-control" name="teacher_Id" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="department">Department</label>
+                                    <select class="form-control select2 select2-danger"
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;" name="department"
+                                        id="department" required>
+                                        <?php
+                                        include '../includes/conn.php';
+                                        if ($conn->connect_error) {
+                                            die("Connection failed: " . $conn->connect_error);
+                                        } else {
+                                            $sql = "SELECT `department_Id`, `name` FROM `department`";
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="role">Role</label>
+                                    <select class="form-control select2 select2-danger"
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;" name="course_Code"
+                                        required>
+                                        <option value="teacher">Teacher</option>
+                                        <option value="hod">HOD</option>
+                                    </select>
+                                </div>
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </form>
 </body>
 
 </html>
