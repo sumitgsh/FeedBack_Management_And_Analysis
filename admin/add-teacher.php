@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         </section>
-        </form>
+    </div>
 </body>
 
 </html>
