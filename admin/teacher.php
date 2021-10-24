@@ -20,20 +20,28 @@ include '../includes/conn.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
+    $message = "";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST['teacher_Id']) || empty($_POST['name']) || empty($_POST['email']) || empty($_POST['department']) || empty($_POST['role'])) {
             echo "error";
             die();
         } else {
             // have to check if 2 hod exist in a dept or not
+
             $teacher_Id = $_POST['teacher_Id'];
             $name = $_POST['name'];
             $email = $_POST['email'];
             $department_Id = $_POST['department'];
             $role = $_POST['role'];
-            $sql = "UPDATE `teacher` SET `name`='$name',`email`='email',`department_Id`='$department_Id', `role`='$role' WHERE `teacher_Id`='$teacher_Id'";
+            $sql = "UPDATE `teacher` SET `name`='$name',`email`='$email',`department_Id`='$department_Id', `role`='$role' WHERE `teacher_Id`='$teacher_Id'";
             if ($conn->query($sql) === TRUE) {
                 echo "teacher added";
+                $message = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>';
             } else {
                 echo $conn->error;
             }
@@ -44,6 +52,7 @@ if ($conn->connect_error) {
     $r = "";
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+
             $teacher_Id = $row["teacher_Id"];
             $name = $row["name"];
             $email  = $row["email"];
@@ -84,6 +93,7 @@ if ($conn->connect_error) {
                         <h1>Teacher</h1>
                     </div>
                 </div>
+                <?php echo $message; ?>
             </div><!-- /.container-fluid -->
         </section>
         <section class="content">
