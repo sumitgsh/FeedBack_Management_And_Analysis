@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="form-group">
                                     <label for="role">Role</label>
                                     <select class="form-control select2 select2-danger"
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;" name="course_Code"
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;" name="role"
                                         required>
                                         <option value="teacher">Teacher</option>
                                         <option value="hod">HOD</option>
