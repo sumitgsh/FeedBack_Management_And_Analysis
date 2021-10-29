@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <!-- Datatable plugin CSS file -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
 
@@ -36,17 +35,18 @@ if ($conn->connect_error) {
             $sql = "UPDATE `teacher` SET `name`='$name',`email`='$email',`department_Id`='$department_Id', `role`='$role' WHERE `teacher_Id`='$teacher_Id'";
             if ($conn->query($sql) === TRUE) {
                 echo "teacher added";
-                $message = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>';
+                $message = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong> Updated Successfully !! </strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
             } else {
                 echo $conn->error;
             }
         }
     }
+
     $teacher = "SELECT `teacher_Id`, `name`, `email`, `department_Id`,`role` FROM `teacher` WHERE `verified`=1";
     $result = $conn->query($teacher);
     $r = "";
@@ -84,6 +84,7 @@ if ($conn->connect_error) {
 ?>
 
 <body>
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -124,14 +125,12 @@ if ($conn->connect_error) {
             </div>
         </section>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
 
     <!-- jQuery library file -->
@@ -142,32 +141,31 @@ if ($conn->connect_error) {
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
     </script>
 
-    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
     </script>
     <script>
-    /* Initialization of datatable */
-    $(document).ready(function() {
-        $('#tableID').DataTable({});
-    });
+        /* Initialization of datatable */
+        $(document).ready(function() {
+            $('#tableID').DataTable({});
+        });
     </script>
     <script>
-    $("button").on("click", function() {
-        var id = $(this).data('id');
-        var name = $(this).data('name');
-        var email = $(this).data('email');
-        var department_Id = $(this).data('department_id');
-        var role = $(this).data('role');
-        $('#teacher_Id').val(id);
-        $('#name').val(name);
-        $('#email').val(email);
-        $('#department').val(department_Id);
-        $('#role').val(role);
-    });
+        $("button").on("click", function() {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var email = $(this).data('email');
+            var department_Id = $(this).data('department_id');
+            var role = $(this).data('role');
+            $('#teacher_Id').val(id);
+            $('#name').val(name);
+            $('#email').val(email);
+            $('#department').val(department_Id);
+            $('#role').val(role);
+        });
     </script>
+
     <!-- Modal -->
-    <div id="addModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-        aria-hidden="true">
+    <div id="addModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -193,9 +191,7 @@ if ($conn->connect_error) {
                             </div>
                             <div class="form-group">
                                 <label for="department">Department</label>
-                                <select class="form-control select2 select2-danger"
-                                    data-dropdown-css-class="select2-danger" style="width: 100%;" name="department"
-                                    id="department" required>
+                                <select class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;" name="department" id="department" required>
                                     <?php
                                     include '../includes/conn.php';
                                     if ($conn->connect_error) {
@@ -215,9 +211,7 @@ if ($conn->connect_error) {
 
                             <div class="form-group">
                                 <label for="role">Role</label>
-                                <select class="form-control select2 select2-danger"
-                                    data-dropdown-css-class="select2-danger" style="width: 100%;" id="role" name="role"
-                                    required>
+                                <select class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;" id="role" name="role" required>
                                     <option value="teacher">Teacher</option>
                                     <option value="hod">HOD</option>
                                 </select>
