@@ -98,16 +98,16 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="teacher.php" class="nav-link">
+              <a href="data.php" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Teacher</p>
+                <p>View Teacher</p>
               </a>
             </li>
 
             <li class="nav-item">
               <a href="add-question.php" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Questions</p>
+                <p> View Questions</p>
               </a>
             </li>
 

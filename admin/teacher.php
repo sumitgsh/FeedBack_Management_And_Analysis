@@ -34,7 +34,7 @@ if ($conn->connect_error) {
             $role = $_POST['role'];
             $sql = "UPDATE `teacher` SET `name`='$name',`email`='$email',`department_Id`='$department_Id', `role`='$role' WHERE `teacher_Id`='$teacher_Id'";
             if ($conn->query($sql) === TRUE) {
-                echo "teacher added";
+        
                 $message = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
                 <strong> Updated Successfully !! </strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
