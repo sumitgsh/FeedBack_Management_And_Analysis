@@ -44,28 +44,55 @@ if ($conn->connect_error) {
 } else {
     $message = "";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST['teacher_Id']) || empty($_POST['name']) || empty($_POST['email']) || empty($_POST['department']) || empty($_POST['role'])) {
-            echo "error";
-            die();
+        include '../includes/conn.php';
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
         } else {
-            // have to check if 2 hod exist in a dept or not
+            if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employeer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
+                echo "error";
+                die();
+            } else {
+                $question_Id = $_POST["question_Id"];
+                $question = $_POST["question"];
+                $question_Type = $_POST["question_Type"];
+                $alumni =  isset($_POST['alumni']) ? $_POST["alumni"] : "";
+                $employeer = isset($_POST['emoloyeer']) ? $_POST["employeer"] : "";
+                $parent = isset($_POST['parent']) ? $_POST["parent"] : "";
+                $student = isset($_POST['student']) ? $_POST["student"] : "";
+                $teacher = isset($_POST['teacher']) ? $_POST["teacher"] : "";
 
-            $teacher_Id = $_POST['teacher_Id'];
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $department_Id = $_POST['department'];
-            $role = $_POST['role'];
-            $sql = "UPDATE `teacher` SET `name`='$name',`email`='$email',`department_Id`='$department_Id', `role`='$role' WHERE `teacher_Id`='$teacher_Id'";
-            if ($conn->query($sql) === TRUE) {
-                echo "teacher added";
-                $message = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
-                <strong> Updated Successfully !! </strong>
+                $a = array($alumni, $employeer, $parent, $student, $teacher);
+                try {
+                    $sql = "UPDATE `question` SET`question`='$question',`question_Type`='$question_Type' WHERE  `question_Id`=$question_Id ";
+                    if ($conn->query($sql) === TRUE) {
+                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Question </strong> Successfully Updated !!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>';
-            } else {
-                echo $conn->error;
+                    } else {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Failed Try Again!!</strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
+                    }
+                    $sqlCat = "DELETE * FROM `questioncategory` WHERE question_Id`=$question_Id ";
+                    $conn->query($sqlCat);
+
+                    foreach ($a as $value) {
+                        if (!empty($value)) {
+                            $questioncategory = "INSERT INTO `questioncategory`(`category_Id`, `question_Id`) VALUES ('$value','$question_Id')";
+                            $conn->query($questioncategory);
+                        }
+                    }
+                } catch (Exception $e) {
+                    //throw $th;
+                    echo $e;
+                    echo "exp";
+                }
             }
         }
     }
@@ -123,7 +150,7 @@ if ($conn->connect_error) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Teacher</h1>
+                            <h1>Question add check box</h1>
                         </div>
                     </div>
                     <?php echo $message; ?>
@@ -198,6 +225,12 @@ if ($conn->connect_error) {
         var id = $(this).data('id');
         var question = $(this).data('question');
         var question_Type = $(this).data('qt');
+        var alumni = $(this).data('alumni');
+        var employer = $(this).data('employer');
+        var student = $(this).data('student');
+        var parent = $(this).data('parent');
+        var teacher = $(this).data('teacher');
+        console.log(alumni, employer, student, parent, teacher);
         $('#question_Id').val(id);
         $('#question').val(question);
         $('#question_Type').val(question_Type);
@@ -211,7 +244,7 @@ if ($conn->connect_error) {
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Teacher</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Question</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -239,9 +272,9 @@ if ($conn->connect_error) {
                             </div>
                             <div class="form-group">
                                 <label for="question_Category">Question Category</label><br>
-                                <input type="checkbox" name="alumni" value="alumni">
+                                <input type="checkbox" id="alumni" name="alumni" value="alumni">
                                 <label for="alumni"> Alumni</label><br>
-                                <input type="checkbox" name="employeer" value="employeer">
+                                <input type="checkbox" name="employeer" value="employer">
                                 <label for="employer"> Employer</label><br>
                                 <input type="checkbox" name="parent" value="parent">
                                 <label for="parent"> Parent</label><br>
