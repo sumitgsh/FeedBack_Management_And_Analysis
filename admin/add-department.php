@@ -15,6 +15,14 @@
 </head>
 
 <?php
+
+// Session check if logged In the open the page else redirect to login.
+session_start();
+if(!isset($_SESSION['success']) && empty($_SESSION['success'])) {
+  header('location:login.php');
+}
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   include '../includes/conn.php';
   if ($conn->connect_error) {
@@ -132,11 +140,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/demo.js"></script>
   <!-- Page specific script -->
   <script>
-    // Dismiss the alert after 5 Sec
-    // setTimeout(
-    //   function() {
-    //     $(".alert").alert('close')
-    //   }, 2000)
+    // Dismiss the alert after 4 Sec
+    setTimeout(
+      function() {
+        $(".alert").alert('close')
+      }, 2000)
 
 
     $(function() {

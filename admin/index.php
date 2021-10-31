@@ -1,3 +1,14 @@
+<?php
+
+// Session check if logged In the open the page else redirect to login.
+session_start();
+if(!isset($_SESSION['success']) && empty($_SESSION['success'])) {
+  header('location:login.php');
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

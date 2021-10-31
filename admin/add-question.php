@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <input type="checkbox" name="alumni" value="alumni">
                                             <label for="alumni"> Alumni</label><br>
                                             <input type="checkbox" name="employeer" value="employeer">
-                                            <label for="employeer"> Employeer</label><br>
+                                            <label for="employer"> Employer</label><br>
                                             <input type="checkbox" name="parent" value="parent">
                                             <label for="parent"> Parent</label><br>
                                             <input type="checkbox" name="student" value="student">

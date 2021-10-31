@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+
 :root {
   --main-bg-color:hsl(103,50%,49%);
 }
@@ -14,7 +14,7 @@
 html {
   height: 100%;
   box-sizing: border-box;
-  font-family: Montserrat, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
 }
@@ -173,7 +173,7 @@ button {
   background: var(--main-bg-color);
   color: #fff;
   font-size: 1.2em;
-  font-family: Montserrat, sans-serif;
+  font-family: 'Open-Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-weight: bold;
   padding: 0.8em 2em;
