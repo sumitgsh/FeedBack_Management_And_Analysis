@@ -1,7 +1,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="author" content="Yinka Enoch Adedokun">
+	<meta name="author">
 	<title>Login Page</title>
 	<link rel="stylesheet" href="../assets/css/admin_login_style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">

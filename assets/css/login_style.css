@@ -48,7 +48,7 @@ h1 {
   text-align: center;
 }
 
-form input {
+form input,select {
   background: #eee;
   border: none;
   padding: 12px 15px;
@@ -60,6 +60,9 @@ form input:focus {
   outline: 1px solid var(--main-bg-color);
 }
 
+form select:focus {
+  outline: 1px solid var(--main-bg-color);
+}
 span {
   color: #333;
   font-size: 1.4em;
