@@ -155,10 +155,10 @@ if ($conn->connect_error) {
 	</div>
 	<script>
 		// Dismiss the alert after 4 Sec
-		// setTimeout(
-		//   function() {
-		//     $(".alert").alert('close')
-		//   }, 4000)
+		setTimeout(
+		  function() {
+		    $(".alert").alert('close')
+		  }, 4000)
 	</script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
