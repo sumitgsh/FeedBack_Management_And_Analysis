@@ -48,6 +48,40 @@ if ($conn->connect_error) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
+            $feedback_type = $_GET['feedback_type'];
+            //get feedback question
+            $sql = "SELECT qc.category_Id, qc.question_Id,q.question,q.question_Type FROM `questioncategory` as qc,question q WHERE qc.question_Id=q.question_Id and qc.category_Id='" . $feedback_type . "' order by qc.question_Id,q.question_type";
+            $result = $conn->query($sql);
+            $r = "<h1>" . ucwords($feedback_type) . " Feedback Form</h1>";
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $r = $r . '<div class="card card-primary">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            ' . $row['question'] . '
+                                        </div>
+                                    </div>';
+                    if ($row['question_Type'] == 'rating') {
+                        $r = $r . '<div class="card-body">
+                                        <input type="radio" id="' . $row['category_Id'] . '" name="' . $row['category_Id'] . '" value="5">
+                                        <label for="' . $row['category_Id'] . '">Strongly Agree</label><br>
+                                        <input type="radio" id="' . $row['category_Id'] . '" name="' . $row['category_Id'] . '" value="4">
+                                        <label for="' . $row['category_Id'] . '">Agree</label><br>
+                                        <input type="radio" id="' . $row['category_Id'] . '" name="' . $row['category_Id'] . '" value="3">
+                                        <label for="' . $row['category_Id'] . '">Neutral</label><br>
+                                        <input type="radio" id="' . $row['category_Id'] . '" name="' . $row['category_Id'] . '" value="2">
+                                        <label for="' . $row['category_Id'] . '">Disagree</label><br>
+                                        <input type="radio" id="' . $row['category_Id'] . '" name="' . $row['category_Id'] . '" value="1">
+                                        <label for="' . $row['category_Id'] . '">Strogly Disagree</label>
+                                    </div>
+                                </div>';
+                    } else {
+                        $r = $r . '<div class="card-body">
+                                        <textarea id="' . $row['category_Id'] . '" class="form-control" name="' . $row['category_Id'] . '" rows="4" cols="50" required></textarea>
+                                    </div>';
+                    }
+                }
+            }
         }
     }
 }
@@ -81,10 +115,10 @@ if ($conn->connect_error) {
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                 <div class="form-group">
-                                    <label for="question_Type">Select Type</label><br>
-                                    <select name="question_Type" id="question_Type"
+                                    <label for="feedback_type">Select Type</label><br>
+                                    <select name="feedback_type" id="feedback_type"
                                         class="form-control select2 select2-danger"
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option value="alumni">Alumni</option>
@@ -101,6 +135,14 @@ if ($conn->connect_error) {
                             </form>
 
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 >
+                            <form action="">
+                                <div class=" card card-primary col-md-8 p-4" style="margin: auto;">
+                            <?php echo $r; ?>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </section>
