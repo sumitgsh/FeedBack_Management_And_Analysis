@@ -1,7 +1,6 @@
 <?php
 
 include './includes/conn.php';
-include './send-mail.php';
 
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
@@ -39,6 +38,7 @@ if ($conn->connect_error) {
 
 			$query = "INSERT INTO student(roll_No,name,email,password) VALUES('$roll_No','$name','$email','$hashedPsd')";
 			$result = mysqli_query($conn, $query);
+			echo "ji";
 			if ($result) {
 				$_SESSION['name'] = $name;
 				$_SESSION['email'] = $email;
@@ -46,11 +46,13 @@ if ($conn->connect_error) {
 				$_SESSION['success'] = "You are now logged in";
 
 				# send verification email	
-				sendVerificationEmail($email, $token);
+
+				include './send-mail.php';
+				echo "j";
 
 				echo '<script type="text/javascript">';
 				echo 'alert("Regiatration Successcull \n Please Verify Your Email to Login !!");';
-				echo 'window.location.href = "login.php";';
+				//echo 'window.location.href = "login.php";';
 				echo '</script>';
 			}
 		}
