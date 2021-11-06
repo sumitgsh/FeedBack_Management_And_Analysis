@@ -63,8 +63,6 @@ if ($conn->connect_error) {
 }
 ?>
 
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -224,59 +222,9 @@ if ($conn->connect_error) {
 			});
 		});
 	</script>
-                    <label class="remember" for="terms">
-                        <input type="checkbox" id="terms" required /><span>I accept terms</span>
-                    </label>
-                    <span class="clearfix"></span>
-                    <button type="submit" name="submit">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script src="assets/js/index.js"></script>
-    <script src="./assets/js/login_style.js"></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script type="text/javascript">
-    // Dismiss the alert after 4 Sec
-    setTimeout(
-        function() {
-            $(".alert").alert('close')
-        }, 4000)
+                   
 
 
-    $('#rollNo').change(function() {
-        $.ajax({
-            url: "checkRoll.php",
-            data: {
-                roll_No: $('#rollNo').val()
-            },
-            type: "GET",
-            context: document.body,
-            success: function(result) {
-                if ($.trim(result) == "1") {
-                    alert("Record for this roll No already exists");
-                }
-            }
-        });
-    });
-
-    $('#email').change(function() {
-        $.ajax({
-            url: "checkEmail.php",
-            data: {
-                email: $('#email').val()
-            },
-            type: "GET",
-            context: document.body,
-            success: function(result) {
-                if ($.trim(result) == "1") {
-                    alert("Record for this email already exists");
-                }
-            }
-        });
-    });
-    </script>
 
 </body>
 
