@@ -6,7 +6,6 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 } else {
 
-	Session_start();
 	if (isset($_POST['submit'])) {
 		$email = mysqli_escape_string($conn, $_POST['email']);
 		$password = mysqli_escape_string($conn, $_POST['password']);
