@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include '../includes/conn.php';
 
 if ($conn->connect_error) {
@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 	if (isset($_POST['submit'])) {
 		$email = mysqli_escape_string($conn, $_POST['email']);
 		$password = mysqli_escape_string($conn, $_POST['password']);
-		$message="";
+		$message = "";
 		//Remember me 
 		if (isset($_POST["remember_me"])) {
 			if ($_POST["remember_me"] == '1') {
@@ -36,7 +36,7 @@ if ($conn->connect_error) {
 					$_SESSION['departent_Id'] = $row['department_Id'];
 					$_SESSION['role'] = $row['role'];
 					$_SESSION['success'] = "You are now logged in";
-					
+
 					header('location:index.php');
 				} else {
 					//Password did not matched with the hashed One
@@ -64,22 +64,22 @@ if ($conn->connect_error) {
 ?>
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="author" content="Yinka Enoch Adedokun">
-	<title>Login Page</title>
-	<link rel="stylesheet" href="../assets/css/admin_login_style.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-	<link rel="stylesheet" href="../assets/css/style.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css">
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Raleway&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Yinka Enoch Adedokun">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="../assets/css/admin_login_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Raleway&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-	<!-- <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="position:fixed; width:100%;z-index:1;">
+    <!-- <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="position:fixed; width:100%;z-index:1;">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Online Feedback System</a>
 			<button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
@@ -109,62 +109,62 @@ if ($conn->connect_error) {
 			</div>
 		</div>
 	</nav> -->
-	<div id="container">
-		<div class="login">
-			<div class="content">
-				<!-- Password did not matched show the alert  -->
-				<?php
-				 if(isset($_POST['submit']) && strlen($message)>1)
-				 {
-					 echo $message;
-				 }
+    <div id="container">
+        <div class="login">
+            <div class="content">
+                <!-- Password did not matched show the alert  -->
+                <?php
+				if (isset($_POST['submit']) && strlen($message) > 1) {
+					echo $message;
+				}
 				?>
-				<h1>Log In</h1>
+                <h1>Log In</h1>
 
-				<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-					<input type="email" name="email" placeholder="email">
-					<input type="password" name="password" placeholder="password">
-					<div>
-						<label class="remember" for="remember">
-							<input type="checkbox" id="remember" checked /><span>Remember me</span>
-						</label>
-						<span class="forget"><a href="#">Forgot password?</a></span>
-						<span class="clearfix"></span>
-					</div>
-					<button type="submit" name="submit">Log In</button>
-				</form>
-
-
-			</div>
-		</div>
-		<div class="page front">
-			<div class="content">
-				<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-					<circle cx="8.5" cy="7" r="4" />
-					<line x1="20" y1="8" x2="20" y2="14" />
-					<line x1="23" y1="11" x2="17" y2="11" />
-				</svg>
-				<h1>Hello, HOD!</h1>
-				<p>Enter your personal details and start journey with us</p>
-
-			</div>
-		</div>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                    <input type="email" name="email" placeholder="email">
+                    <input type="password" name="password" placeholder="password">
+                    <div>
+                        <label class="remember" for="remember">
+                            <input type="checkbox" id="remember" checked /><span>Remember me</span>
+                        </label>
+                        <span class="forget"><a href="#">Forgot password?</a></span>
+                        <span class="clearfix"></span>
+                    </div>
+                    <button type="submit" name="submit">Log In</button>
+                </form>
 
 
-	</div>
-	<script>
-		// Dismiss the alert after 4 Sec
-		setTimeout(
-		  function() {
-		    $(".alert").alert('close')
-		  }, 4000)
-	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.js"></script>
-	<script src="assets/js/index.js"></script>
-	<script src="./assets/js/login_style.js"></script>
+            </div>
+        </div>
+        <div class="page front">
+            <div class="content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="8.5" cy="7" r="4" />
+                    <line x1="20" y1="8" x2="20" y2="14" />
+                    <line x1="23" y1="11" x2="17" y2="11" />
+                </svg>
+                <h1>Hello, HOD!</h1>
+                <p>Enter your personal details and start journey with us</p>
+
+            </div>
+        </div>
+
+
+    </div>
+    <script>
+    // Dismiss the alert after 4 Sec
+    setTimeout(
+        function() {
+            $(".alert").alert('close')
+        }, 4000)
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script src="./assets/js/login_style.js"></script>
 </body>
 
 </html>

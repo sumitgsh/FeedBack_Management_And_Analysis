@@ -1,63 +1,61 @@
 <?php
-
+session_start();
 include '../includes/conn.php';
-
 if ($conn->connect_error) {
-	die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 } else {
-	if (isset($_POST['submit'])) {
-		$email = mysqli_escape_string($conn, $_POST['email']);
-		$password = mysqli_escape_string($conn, $_POST['password']);
-		$message = "";
-		//Remember me 
-		if (isset($_POST["remember_me"])) {
-			if ($_POST["remember_me"] == '1') {
-				//For 30days it will be saved 
-				$hour = time() + 3600 * 24 * 30;
-				setcookie('email', $email, $hour);
-				setcookie('password', $password, $hour);
-			}
-		}
+    if (isset($_POST['submit'])) {
+        $email = mysqli_escape_string($conn, $_POST['email']);
+        $password = mysqli_escape_string($conn, $_POST['password']);
+        $message = "";
+        //Remember me 
+        if (isset($_POST["remember_me"])) {
+            if ($_POST["remember_me"] == '1') {
+                //For 30days it will be saved 
+                $hour = time() + 3600 * 24 * 30;
+                setcookie('email', $email, $hour);
+                setcookie('password', $password, $hour);
+            }
+        }
 
-		$query = "SELECT * FROM teacher WHERE email = '$email'";
-		$result = mysqli_query($conn, $query);
+        $query = "SELECT * FROM teacher WHERE email = '$email'";
+        $result = mysqli_query($conn, $query);
 
-		if (mysqli_num_rows($result) == 1) {
-			while ($row = $result->fetch_assoc()) {
+        if (mysqli_num_rows($result) == 1) {
+            while ($row = $result->fetch_assoc()) {
 
-				//Password verify after getting the email
-				$hash = $row['password'];
-				// Verify password based on the hash returned by the above query	
-				// if (password_verify($password, $hash)) {
-				if (password_verify($password, $hash)) {
-					$_SESSION['teacher_Id'] = $row['teacher_Id'];
-					$_SESSION['name'] = $row['name'];
-					$_SESSION['email'] = $row['email'];
-					$_SESSION['departent_Id'] = $row['department_Id'];
-					$_SESSION['role'] = $row['role'];
-					$_SESSION['success'] = "You are now logged in";
+                //Password verify after getting the email
+                $hash = $row['password'];
+                // Verify password based on the hash returned by the above query
+                if (password_verify($password, $hash)) {
+                    $_SESSION['teacher_Id'] = $row['teacher_Id'];
+                    $_SESSION['name'] = $row['name'];
+                    $_SESSION['email'] = $row['email'];
+                    $_SESSION['departent_Id'] = $row['department_Id'];
+                    $_SESSION['role'] = $row['role'];
+                    $_SESSION['success'] = "You are now logged in";
 
-					header('location:index.php');
-				} else {
-					//Password did not matched with the hashed One
-					$message = '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:100%";>
+                    header('location:index.php');
+                } else {
+                    //Password did not matched with the hashed One
+                    $message = '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:100%";>
 					<strong> Password did Not matched !! </strong>
 					<button type="button" class="close" style="position:absolute;top: -22px;;width:0;"  data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>';
-					//   header('location: login.php');
-				}
-			}
-		} else {
-			$message = '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:100%";>
+                    //   header('location: login.php');
+                }
+            }
+        } else {
+            $message = '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:100%";>
 					<strong>Email Id did Not Matched !! </strong>
 					<button type="button" class="close" style="position:absolute;top: -22px;;width:0;"  data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>';
-		}
-	}
+        }
+    }
 }
 ?>
 
