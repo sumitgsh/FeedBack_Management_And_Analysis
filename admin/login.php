@@ -3,10 +3,6 @@ session_start();
 include '../includes/conn.php';
 
 // Session check if logged In the open the page else redirect to login.
-session_start();
-if (isset($_SESSION['success']) && !empty($_SESSION['success'])) {
-  header('location:index.php');
-}
 
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
