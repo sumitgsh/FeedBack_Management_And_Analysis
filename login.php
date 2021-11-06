@@ -188,13 +188,6 @@ if ($conn->connect_error) {
 	<script src="./assets/js/login_style.js"></script>
 	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 	<script type="text/javascript">
-		// Dismiss the alert after 4 Sec
-		setTimeout(
-			function() {
-				$(".alert").alert('close')
-			}, 4000)
-
-
 		$('#rollNo').change(function() {
 			$.ajax({
 				url: "checkRoll.php",
