@@ -236,29 +236,19 @@ if ($conn->connect_error) {
         $('#question_Type').val(question_Type);
         if (alumni.length > 0) {
             $("#alumni").attr("checked", true);
-        } else {
-            $("#alumni").attr("checked", false);
         }
         if (employer.length > 0) {
             $("#employer").attr("checked", true);
-        } else {
-            $("#employer").attr("checked", false);
         }
         if (parent.length > 0) {
             $("#parent").attr("checked", true);
-        } else {
-            $("#parent").attr("checked", false);
         }
         if (teacher.length > 0) {
             $("#teacher").attr("checked", true);
-        } else {
-            $("#teacher").attr("checked", false);
         }
         if (student.length > 0) {
             $("#student").attr("checked", true);
             console.log(student + "ji");
-        } else {
-            $("#student").attr("checked", false);
         }
 
 
@@ -271,8 +261,13 @@ if ($conn->connect_error) {
             };
         $.post(ajaxurl, data, function(response) {
             // Response div goes here.
-            alert("Delete successfully");
-            header('location:question.php');
+            console.log(response);
+            if (response == 1) {
+                alert("Delete successfully");
+                location.reload();
+            } else {
+                alert("Delete failed");
+            }
 
         });
     });
