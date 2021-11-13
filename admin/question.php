@@ -47,7 +47,7 @@ if ($conn->connect_error) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
-            if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employeer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
+            if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
                 echo "error";
                 die();
             } else {
@@ -55,12 +55,12 @@ if ($conn->connect_error) {
                 $question = $_POST["question"];
                 $question_Type = $_POST["question_Type"];
                 $alumni =  isset($_POST['alumni']) ? $_POST["alumni"] : "";
-                $employeer = isset($_POST['emoloyeer']) ? $_POST["employeer"] : "";
+                $employer = isset($_POST['employer']) ? $_POST["employer"] : "";
                 $parent = isset($_POST['parent']) ? $_POST["parent"] : "";
                 $student = isset($_POST['student']) ? $_POST["student"] : "";
                 $teacher = isset($_POST['teacher']) ? $_POST["teacher"] : "";
 
-                $a = array($alumni, $employeer, $parent, $student, $teacher);
+                $a = array($alumni, $employer, $parent, $student, $teacher);
                 try {
                     $sql = "UPDATE `question` SET`question`='$question',`question_Type`='$question_Type' WHERE  `question_Id`=$question_Id ";
                     if ($conn->query($sql) === TRUE) {
@@ -78,7 +78,7 @@ if ($conn->connect_error) {
                 </button>
               </div>';
                     }
-                    $sqlCat = "DELETE * FROM `questioncategory` WHERE question_Id`=$question_Id ";
+                    $sqlCat = "DELETE FROM `questioncategory` WHERE question_Id=$question_Id ";
                     $conn->query($sqlCat);
 
                     foreach ($a as $value) {
@@ -117,10 +117,10 @@ if ($conn->connect_error) {
                 <td>' . $question_Id . '</td>
                 <td>' . ucwords($question) . '</td>
                 <td>' . ucwords($question_Type) . '</td>
-                <td><button type="button" class="btn btn-primary" class="addAttr" data-toggle="modal" data-target="#addModal" 
+                <td><button type="button" class="edit btn btn-primary" class="addAttr" data-toggle="modal" data-target="#addModal" 
                 data-id="' . $question_Id . '" data-question="' . $question . '" data-qt="' . $question_Type . '"
-                 data-alumni="' . $category_Id['alumni'] . '" data-employer="' . $category_Id['employer'] . '"data-student="
-                ' . $category_Id['student'] . '"data-parent="' . $category_Id['parent'] . '"data-teacher="' . $category_Id['teacher'] . '"> Edit</button></td>
+                 data-alumni="' . $category_Id['alumni'] . '" data-employer="' . $category_Id['employer'] . '"data-student="' . $category_Id['student'] . '"data-parent="' . $category_Id['parent'] . '"data-teacher="' . $category_Id['teacher'] . '"> Edit</button>
+                 <button type="button" class="delete btn btn-danger" value="' . $question_Id . '">Delete</button></td>
             </tr>';
         }
     }
@@ -149,7 +149,7 @@ if ($conn->connect_error) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Question add check box</h1>
+                            <h1>Question</h1>
                         </div>
                     </div>
                     <?php echo $message; ?>
@@ -220,7 +220,7 @@ if ($conn->connect_error) {
     });
     </script>
     <script>
-    $("button").on("click", function() {
+    $(".edit").on("click", function() {
         var id = $(this).data('id');
         var question = $(this).data('question');
         var question_Type = $(this).data('qt');
@@ -233,6 +233,42 @@ if ($conn->connect_error) {
         $('#question_Id').val(id);
         $('#question').val(question);
         $('#question_Type').val(question_Type);
+        if (alumni.length > 0) {
+            $("#alumni").attr("checked", true);
+        }
+        if (employer.length > 0) {
+            $("#employer").attr("checked", true);
+        }
+        if (parent.length > 0) {
+            $("#parent").attr("checked", true);
+        }
+        if (teacher.length > 0) {
+            $("#teacher").attr("checked", true);
+        }
+        if (student.length > 0) {
+            $("#student").attr("checked", true);
+            console.log(student + "ji");
+        }
+
+
+    });
+    $(".delete").on("click", function() {
+        var clickBtnValue = $(this).val();
+        var ajaxurl = 'delete-question.php',
+            data = {
+                'delete': clickBtnValue
+            };
+        $.post(ajaxurl, data, function(response) {
+            // Response div goes here.
+            console.log(response);
+            if (response == 1) {
+                alert("Delete successfully");
+                location.reload();
+            } else {
+                alert("Delete failed");
+            }
+
+        });
     });
     </script>
 
@@ -273,13 +309,13 @@ if ($conn->connect_error) {
                                 <label for="question_Category">Question Category</label><br>
                                 <input type="checkbox" id="alumni" name="alumni" value="alumni">
                                 <label for="alumni"> Alumni</label><br>
-                                <input type="checkbox" name="employeer" value="employer">
+                                <input type="checkbox" id="employer" name="employer" value="employer">
                                 <label for="employer"> Employer</label><br>
-                                <input type="checkbox" name="parent" value="parent">
+                                <input type="checkbox" id="parent" name="parent" value="parent">
                                 <label for="parent"> Parent</label><br>
-                                <input type="checkbox" name="student" value="student">
+                                <input type="checkbox" id="student" name="student" value="student">
                                 <label for="student"> Student</label><br>
-                                <input type="checkbox" name="teacher" value="teacher">
+                                <input type="checkbox" id="teacher" name="teacher" value="teacher">
                                 <label for="teacher"> Teacher</label>
                             </div>
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-$department_Id;
+
 
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,7 @@ $department_Id;
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 </head>
 <?php
+$department_Id = 'cse';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../includes/conn.php';
     if ($conn->connect_error) {
