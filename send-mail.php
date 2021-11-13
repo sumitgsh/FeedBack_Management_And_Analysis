@@ -66,5 +66,9 @@ if (!$mail->send()) {
   echo 'Mailer Error: ' . $mail->ErrorInfo;
 } else {
   $message = "success";
+        echo '<script type="text/javascript">';
+				echo 'alert("Registration Successcull \n Please Verify Your Email to Login !!");';
+				echo 'window.location.href = "login.php";';
+				echo '</script>';
   return true;
 }

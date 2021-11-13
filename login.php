@@ -19,18 +19,28 @@ if ($conn->connect_error) {
 				setcookie('password', $password, $hour);
 			}
 		}
-
+	
+		//Check whether email exist in the database along with verified or not
 		$query = "SELECT * FROM student WHERE email = '$email'";
 		$result = mysqli_query($conn, $query);
 
 		if (mysqli_num_rows($result) == 1) {
 			while ($row = $result->fetch_assoc()) {
 
+				//check whether email is verified
+				if($row['verified']!=1)
+				{
+					echo '<script type="text/javascript">';
+					echo 'alert("Your Email is not Verified !! Please verify");';
+					// echo 'window.location.href = "login.php";';
+					echo '</script>';
+					exit(0);
+				}
+
 				//Password verify after getting the email
 				$hash = $row['password'];
 				// Verify password based on the hash returned by the above query	
-				// if (password_verify($password, $hash)) {
-				if ($hash == $password) {
+				if (password_verify($password, $hash)) {
 					$_SESSION['roll_No'] = $row['roll_No'];
 					$_SESSION['name'] = $row['name'];
 					$_SESSION['email'] = $row['email'];
@@ -141,41 +151,6 @@ if ($conn->connect_error) {
                     <input type="text" placeholder="Name" name="name" required>
                     <input type="email" placeholder="email@tezu.ernet.in" id="email" name="email" required>
                     <input type="password" placeholder="Password" name="password" required>
-
-                    <!-- Department
-					<select required name="Department" id="department">
-						<option value="" disabled selectet>Department</option>
-						<option value="CSE">1</option>
-						<option value="MMTM">2</option>
-						<option value="MCJ">3</option>
-					</select> -->
-
-
-                    <!-- program_Id -->
-                    <!-- <select required name="Programme Name" id="programme">
-						<option value="" disabled selected>Programme Name</option>
-						<option value="MCA">1</option>
-						<option value="MBA">2</option>
-						<option value="B.tech">3</option>
-						
-					</select>	 -->
-
-                    <!-- <input type="text" placeholder="Parent Name" name="parent_Name">
-					<input type="number" placeholder="Parent's Phone No" name="parent_Phone_No">
-
-					<select required name="semester" id="sem">
-						<option value="" disabled selected>Semester</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-					</select>
-					<input type="text" placeholder="Your Relation With Parent" name="relation"> -->
-
 					<label class="remember" for="terms">
 						<input type="checkbox" id="terms" required /><span>I accept terms</span>
 					</label>
