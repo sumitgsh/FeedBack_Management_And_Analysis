@@ -15,40 +15,32 @@
 <?php
 include '../includes/conn.php';
 //include './check.php';
-$teacher_Id = 'a5';
-$department_Id = 'cse';
+$$student_Id = 8;
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    }
-    $course_Taught = "SELECT `course_Taught_Id`, `course_Code`, `session`, `year` FROM `coursetaught` WHERE teacher_Id='$teacher_Id'";
-    $result = $conn->query($course_Taught);
+    $course_Taken = "SELECT department.name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id FROM `coursetaken`,`coursetaught`,`program`,`department`,`course` 
+    WHERE coursetaken.course_Taught_Id=coursetaught.course_Taught_Id AND coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id 
+    AND coursetaken.student_Id=8";
+    $result = $conn->query($course_Taken);
     $r = "";
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $course_Taught_Id  = $row["course_Taught_Id"];
+            $department  = $row["name"];
             $course_Code = $row["course_Code"];
             $year = $row["year"];
             $session = $row["session"];
-            $course = "SELECT `course_Name`, `course_Code`  FROM `course` WHERE `department_Id`='$department_Id'";
-            $courseResult = $conn->query($course);
-            if ($courseResult->num_rows > 0) {
-                while ($rowCourse = $courseResult->fetch_assoc()) {
-                    $course_Name = $rowCourse['course_Name'];
-                    $course_Code = $rowCourse['course_Code'];
-                    $teacher = "SELECT `name`,`department_Id` FROM `teacher` WHERE `teacher_Id`='$teacher_Id' ";
-                    $teacherResult = $conn->query($teacher);
-                    if ($teacherResult->num_rows > 0) {
-                        while ($rowTeacher = $teacherResult->fetch_assoc()) {
-                            $dept = "SELECT `name` FROM `department` WHERE `department_Id`='$department_Id'";
-                            $dResult = $conn->query($dept);
-                            if ($dResult->num_rows > 0) {
-                                while ($row = $dResult->fetch_assoc()) {
-                                    $dept_Name = $row["name"];
-                                }
-                            }
-                        }
+            $course_Taught_Id = $row["course_Taught_Id"];
+            $feedbackIssue = "SELECT `feedback_R_Id`, `issue_date`, `closing_date`, `status`,`issuer_Domain` FROM `feedback_receiveables` WHERE issuer_Domain='$course_Taught_Id'";
+            $feedbackIssueResult = $conn->query($feedbackIssue);
+            if ($feedbackIssueResult->num_rows > 0) {
+                while ($rowFeedback = $feedbackIssueResult->fetch_assoc()) {
+                    $feedback_R_Id = $row["feedback_R_Id"];
+                    $status = $row["status"];
+                    
+                    }
+                    }else{
+                        
                     }
                     $r = $r . '<tr>
                 <td>' . $course_Name . '</td>
@@ -56,11 +48,11 @@ if ($conn->connect_error) {
                 <td>' . ucwords($session) . '</td>
                 <td>' . $year . '</td>
                 <td><button type="button"   
-                "> <a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher/issue-feedback.php?course_Taught_Id=' . $course_Taught_Id . '">Add Student</a> </button></td>
+                "> <a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher//issue-feedback.php?course_Taught_Id=' . $course_Taught_Id . '">Add Student</a> </button></td>
             </tr><br>';
                 }
             }
-        }
+        
     }
 }
 
