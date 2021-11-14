@@ -13,7 +13,8 @@ if ($conn->connect_error) {
 		$password = mysqli_escape_string($conn, $_POST['password']);
 		/*
 			 [X] Email validation of @tezu.ernet.in
-			 [ ] Hash Password when User Provides
+			 [X] Hash Password when User Provides
+			 [] Email verification
 		*/
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -22,7 +23,7 @@ if ($conn->connect_error) {
 		}
 
 		# Email ID match..
-		if (preg_match("/@tezu.ernet.in/i", $email) != 1) {
+		if (false) {
 			echo '<script type="text/javascript">';
 			echo 'alert("Use University Email Id!!");';
 			echo 'window.location.href = "login.php";';
@@ -35,25 +36,18 @@ if ($conn->connect_error) {
 			# generate unique token for user verification
 			$token = bin2hex(random_bytes(50));
 
-
-			$query = "INSERT INTO student(roll_No,name,email,password) VALUES('$roll_No','$name','$email','$hashedPsd')";
+			$query = "INSERT INTO student(roll_No,name,email,password,verified,token) VALUES('$roll_No','$name','$email','$hashedPsd',0,'$token')";
 			$result = mysqli_query($conn, $query);
-			echo "ji";
+
 			if ($result) {
+				
 				$_SESSION['name'] = $name;
 				$_SESSION['email'] = $email;
 				$_SESSION['roll_No'] = $roll_No;
 				$_SESSION['success'] = "You are now logged in";
 
 				# send verification email	
-
 				include './send-mail.php';
-				echo "j";
-
-				echo '<script type="text/javascript">';
-				echo 'alert("Regiatration Successcull \n Please Verify Your Email to Login !!");';
-				//echo 'window.location.href = "login.php";';
-				echo '</script>';
 			}
 		}
 	}
