@@ -48,6 +48,7 @@ if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
             $feedback_Id = $_GET['id'];
+            echo $feedback_Id . "hi";
             $_SESSION['feedback_Id'] = $feedback_Id;
             $feedback_type = $_GET['issued_For'];
             //get feedback question
@@ -86,16 +87,33 @@ if ($conn->connect_error) {
         }
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $feedback_id = $_SESSION['feedback_id'];
+        $feedback_id = $_SESSION['feedback_Id'];
         foreach ($_POST as $key => $value) {
             if ($key != 'submit') {
                 $rating = "INSERT INTO `feedback` (`feedback_id`, `feedbacker_id`, `question_Id`, `answer`) VALUES ($feedback_id,$feedbacker_id,$key,'$value')";
                 if ($conn->query($rating) == true) {
-                    echo $feedback_id . "Field " . htmlspecialchars($key) . " " . $feedbacker_id . "is " . htmlspecialchars($value) . "<br>";
+                    //echo $feedback_id . "Field " . htmlspecialchars($key) . " " . $feedbacker_id . "is " . htmlspecialchars($value) . "<br>";
+                    $v = 1;
                 } else {
                     echo $conn->error;
+                    $v = 0;
                 }
             }
+        }
+        if ($v == 1) {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Department </strong> Feedback Submitted !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
+        } else {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Department </strong> Failed !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
         }
     }
 }
