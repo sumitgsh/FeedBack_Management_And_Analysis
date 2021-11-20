@@ -13,56 +13,50 @@
 </head>
 
 <?php
-include '../includes/conn.php';
+include './includes/conn.php';
 //include './check.php';
-$teacher_Id = 'a5';
-$department_Id = 'cse';
+$student_Id = 8;
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    }
-    $course_Taught = "SELECT `course_Taught_Id`, `course_Code`, `session`, `year` FROM `coursetaught` WHERE teacher_Id='$teacher_Id'";
-    $result = $conn->query($course_Taught);
+    $feedback = "SELECT department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
+                issue_date,closing_date,feedback_receiveables.status,teacher.name as tName,feedback_receiveables.feedback_R_Id, feedback_receiveables.issued_For FROM`coursetaken`,`coursetaught`,`program`,`department`,
+                `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND coursetaken.course_Taught_Id=coursetaught.course_Taught_Id AND
+                 coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id AND coursetaken.student_Id=$student_Id AND feedback_receiveables.issued_For='student'
+                  AND (feedback_receiveables.issuer_Domain=coursetaught.course_Taught_Id OR feedback_receiveables.issued_By='hod') ORDER BY closing_date DESC";
+    $result = $conn->query($feedback);
     $r = "";
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $course_Taught_Id  = $row["course_Taught_Id"];
+            $department  = $row["dName"];
+            $issuerName = $row["tName"];
+            $courseName = $row["course_Name"];
             $course_Code = $row["course_Code"];
-            $year = $row["year"];
-            $session = $row["session"];
-            $course = "SELECT `course_Name`, `course_Code`  FROM `course` WHERE `department_Id`='$department_Id'";
-            $courseResult = $conn->query($course);
-            if ($courseResult->num_rows > 0) {
-                while ($rowCourse = $courseResult->fetch_assoc()) {
-                    $course_Name = $rowCourse['course_Name'];
-                    $course_Code = $rowCourse['course_Code'];
-                    $teacher = "SELECT `name`,`department_Id` FROM `teacher` WHERE `teacher_Id`='$teacher_Id' ";
-                    $teacherResult = $conn->query($teacher);
-                    if ($teacherResult->num_rows > 0) {
-                        while ($rowTeacher = $teacherResult->fetch_assoc()) {
-                            $dept = "SELECT `name` FROM `department` WHERE `department_Id`='$department_Id'";
-                            $dResult = $conn->query($dept);
-                            if ($dResult->num_rows > 0) {
-                                while ($row = $dResult->fetch_assoc()) {
-                                    $dept_Name = $row["name"];
-                                }
-                            }
-                        }
-                    }
-                    $r = $r . '<tr>
-                <td>' . $course_Name . '</td>
-                <td>' . $dept_Name . '</td>
-                <td>' . ucwords($session) . '</td>
-                <td>' . $year . '</td>
-                <td><button type="button"   
-                "> <a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher/issue-feedback.php?course_Taught_Id=' . $course_Taught_Id . '">Add Student</a> </button></td>
-            </tr><br>';
-                }
+            $issue_date = $row["issue_date"];
+            $closing_date = $row["closing_date"];
+            $course_Taught_Id = $row["course_Taught_Id"];
+            $id = $row["feedback_R_Id"];
+            $issued_For = $row["issued_For"];
+
+            $date = date("Y-m-d");
+            if ($date >= $issue_date & $date <= $closing_date) {
+                $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
+            } else {
+                $b = '<button type="button" class="btn btn-primary" disabled>Unavailable</button';
             }
+            $r = $r . '<tr>
+                <td>' . $id . '</td>
+                <td>' . $issue_date . '</td>
+                <td>' . $closing_date . '</td>
+                <td>' . $issuerName . '</td>
+                <td>' . $department . '</td>
+                <td>' . $courseName . '</td>
+                <td>' . $b . '</tr><br>';
         }
     }
 }
+
+
 
 ?>
 
@@ -73,7 +67,7 @@ if ($conn->connect_error) {
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Course Taught</h1>
+                        <h1>Feedback List</h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -81,14 +75,16 @@ if ($conn->connect_error) {
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <table id="tableID" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Course Name</th>
-                                    <th>Departemnt</th>
-                                    <th>Session</th>
-                                    <th>Year</th>
+                                    <th>ID</th>
+                                    <th>Issue Date</th>
+                                    <th>Closer Date</th>
+                                    <th>Issued By</th>
+                                    <th>Department</th>
+                                    <th>Course</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
