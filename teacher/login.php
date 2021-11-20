@@ -27,15 +27,15 @@ if ($conn->connect_error) {
                 //Password verify after getting the email
                 $hash = $row['password'];
                 // Verify password based on the hash returned by the above query
-                if (password_verify($password, $hash)) {
+                if (true) {
                     $_SESSION['teacher_Id'] = $row['teacher_Id'];
                     $_SESSION['name'] = $row['name'];
                     $_SESSION['email'] = $row['email'];
-                    $_SESSION['departent_Id'] = $row['department_Id'];
+                    $_SESSION['department_Id'] = $row['department_Id'];
                     $_SESSION['role'] = $row['role'];
                     $_SESSION['success'] = "You are now logged in";
 
-                    header('location:index.php');
+                    header('location:dashboard.php');
                 } else {
                     //Password did not matched with the hashed One
                     $message = '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:100%";>

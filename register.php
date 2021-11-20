@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 		/*
 			 [X] Email validation of @tezu.ernet.in
 			 [X] Hash Password when User Provides
-			 [] Email verification
+			 [X] Email verification
 		*/
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {

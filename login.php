@@ -26,13 +26,13 @@ if ($conn->connect_error) {
 
 		if (mysqli_num_rows($result) == 1) {
 			while ($row = $result->fetch_assoc()) {
-
+				$row['verified'];
 				//check whether email is verified
-				if($row['verified']!=1)
+				if($row['verified']==false)
 				{
 					echo '<script type="text/javascript">';
 					echo 'alert("Your Email is not Verified !! Please verify");';
-					// echo 'window.location.href = "login.php";';
+					echo 'window.location.href = "login.php";';
 					echo '</script>';
 					exit(0);
 				}

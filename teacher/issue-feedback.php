@@ -1,30 +1,64 @@
 <?php
 
 include '../includes/conn.php';
+session_start();
+
+$department_Id = $_SESSION['department_Id'];
+
+$selected_students = "";
+
+// Show the Selected Students in the Dashboard after selecting based on student_ID
+
+$stu_sel_det = "SELECT student.student_Id,roll_No,department.name,program_Name,semester FROM student,department,program,coursetaken where student.program_Id=program.program_Id 
+                    AND program.department_Id=department.department_Id AND student.student_Id=coursetaken.student_Id";
+
+$result = $conn->query($stu_sel_det);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+
+        $student_Id = $row["student_Id"];
+        $roll_No = $row["roll_No"];
+        $department = $row["name"];
+        $program_Name = $row["program_Name"];
+        $semester = $row["semester"];
+
+        $selected_students = $selected_students . '<tr>
+                <td>' . $roll_No . '</td>
+                <td>' . ucwords($department) . '</td>
+                <td>' . ucwords($program_Name) . '</td>
+                <td>' . ucwords($semester) . '</td></tr>';
+    }
+}
 
 
-$question = "SELECT `question_Id`, `question`, `question_Type` FROM `question` ";
-$result = $conn->query($question);
+
+
+
+
+//Selects all the students belong to the department
+// select student_Id,department.name,program_Name,semester from student,department,program where department.department_Id='CSE_TU_2';
+
+$student_detail = "SELECT student_Id,roll_No,department.name,program_Name,semester FROM student,department,program where student.program_Id=program.program_Id 
+                    AND program.department_Id=department.department_Id";
+
+$result = $conn->query($student_detail);
 $r = "";
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
-        $question_Id = $row["question_Id"];
-        $question = $row["question"];
-        $question_Type = $row["question_Type"];
-        $questionCat = "SELECT `category_Id`, `question_Id` FROM `questioncategory` WHERE `question_Id`=$question_Id";
-        $dResult = $conn->query($questionCat);
-        $category_Id = array('alumni' => '', 'employer' => '', 'student' => '', 'parent' => '', 'teacher' => '');
-        if ($dResult->num_rows > 0) {
-            while ($row = $dResult->fetch_assoc()) {
-                $category_Id[$row['category_Id']] = $row['category_Id'];
-            }
-        }
+        $student_Id = $row["student_Id"];
+        $roll_No = $row["roll_No"];
+        $department = $row["name"];
+        $program_Name = $row["program_Name"];
+        $semester = $row["semester"];
+
         $r = $r . '<tr>
-                <td>' . $question_Id . '</td>
-                <td>' . ucwords($question) . '</td>
-                <td>' . ucwords($question_Type) . '</td>
-                <td><input type="checkbox" value="' . $question_Id . '" ></td></tr>';
+                <td>' . $roll_No . '</td>
+                <td>' . ucwords($department) . '</td>
+                <td>' . ucwords($program_Name) . '</td>
+                <td>' . ucwords($semester) . '</td>
+                <td><input type="checkbox" name="student_Ids[]" value="' . $student_Id . '" ></td></tr>';
     }
 }
 ?>
@@ -102,21 +136,29 @@ if ($result->num_rows > 0) {
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                    <?php
+                                    echo $selected_students;
+                                    ?>
                                     <tr>
-                                        <td>CSM20036</td>
-                                        <td>CSE</td>
-                                        <td>MCA</td>
-                                        <td>5</td>
-                                    </tr>
-                                    <tr>
-                                        <td>CSM20036</td>
-                                        <td>CSE</td>
-                                        <td>MCA</td>
-                                        <td>5</td>
+
+
                                     </tr>
                                 </tbody>
                             </table>
 
+                            <div class="row mt-4 p-2">
+                                <div class="col-md-9"></div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary" style="width: 100%;">Modify</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-danger" style="width: 100%;">Stop</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-success" style="width: 100%;">Publish</button>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -131,36 +173,60 @@ if ($result->num_rows > 0) {
                             <h1>Select Students who will receive the Feedback</h1>
                         </div>
                     </div>
-                    <div class="row mb-2">
-                        <div class="col-md-2">
+                    <div class="row">
+                    <div class="col-md-12">
                             <h5>Filter By:<h5>
                         </div>
-                        <div class="col-md-2">
+                    </div>
+                    <div class="row mb-2">
+                        
+                        <div class="col-md-3">
                             <div>
                                 <label>Department: </label>
-                                <select style="height:2.5rem;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option selected>All</option>
-                                    <option value="1">CSE</option>
-                                    <option value="2">MCJ</option>
-                                    <option value="3">MBBT</option>
+                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                <option selected>All</option>
+                                    <?php
+                                    if ($conn->connect_error) {
+                                        die("Connection failed: " . $conn->connect_error);
+                                    } else {
+                                        $sql = "SELECT `department_Id`, `name` FROM `department`";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
+                                            }
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-5">
                             <div>
                                 <label>Programme: </label>
-                                <select style="height:2.5rem;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option selected>All</option>
-                                    <option value="1">CSE</option>
-                                    <option value="2">MCJ</option>
-                                    <option value="3">MBBT</option>
+
+                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                <option selected>All</option>
+                                <?php
+                                if ($conn->connect_error) {
+                                    die("Connection failed: " . $conn->connect_error);
+                                } else {
+                                    $sql = "SELECT `program_Id`, `program_Name` FROM `program`";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo '<option value="' . $row["program_Id"] . '">' . $row["program_Name"] . '</option>';
+                                        }
+                                    }
+                                }
+                                ?>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="filter_field">
                                 <label>Semester: </label>
-                                <select style="height:2.5rem;" class="form-select form-select-lg" aria-label=".form-select-lg example">
+                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg" aria-label=".form-select-lg example">
                                     <option selected>All</option>
                                     <option value="1">CSE</option>
                                     <option value="2">MCJ</option>
@@ -169,9 +235,9 @@ if ($result->num_rows > 0) {
                             </div>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-2 d-flex align-items-center" style="margin-top: 1rem;">
                             <div>
-                              <button class="btn btn-success">Search</button>
+                                <button class="btn btn-success">Search</button>
                             </div>
                         </div>
 
@@ -181,28 +247,35 @@ if ($result->num_rows > 0) {
             </section>
             <section class="content">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table id="tableID" class="display" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Roll No</th>
-                                        <th>Department</th>
-                                        <th>Programme</th>
-                                        <th>Semester</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    echo $r;
-                                    ?>
-                                </tbody>
-                            </table>
+                    <form method="POST" action="course-taken.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="tableID" class="display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Roll No</th>
+                                            <th>Department</th>
+                                            <th>Programme</th>
+                                            <th>Semester</th>
+                                            <th>Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        echo $r;
+                                        ?>
+                                    </tbody>
 
+                                </table>
+                                <div class="row mt-4 p-2">
+                                    <div class="col-md-2 offset-md-5">
+                                        <button type="submit" name="submit" class="btn btn-primary">Save Selected</button>
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </section>
             <!-- /.content -->
