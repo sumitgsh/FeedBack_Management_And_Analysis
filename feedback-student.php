@@ -47,8 +47,8 @@ if ($conn->connect_error) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
-            $feedback_Id = $_GET['id'];
-            echo $feedback_Id . "hi";
+            //$feedback_Id = $_GET['id'];
+            //echo $feedback_Id . "hi";
             $_SESSION['feedback_Id'] = $feedback_Id;
             $feedback_type = $_GET['issued_For'];
             //get feedback question
