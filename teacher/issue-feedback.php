@@ -16,7 +16,6 @@ $result = $conn->query($stu_sel_det);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-
         $student_Id = $row["student_Id"];
         $roll_No = $row["roll_No"];
         $department = $row["name"];
@@ -174,22 +173,23 @@ if ($result->num_rows > 0) {
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-md-12">
+                        <div class="col-md-12">
                             <h5>Filter By:<h5>
                         </div>
                     </div>
                     <div class="row mb-2">
-                        
+
                         <div class="col-md-3">
                             <div>
                                 <label>Department: </label>
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                <option selected>All</option>
+                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
+                                    aria-label=".form-select-lg example">
+                                    <option selected>All</option>
                                     <?php
                                     if ($conn->connect_error) {
                                         die("Connection failed: " . $conn->connect_error);
                                     } else {
-                                        $sql = "SELECT `department_Id`, `name` FROM `department`";
+                                        $sql = "SELECT `department_Id`, `name`, FROM `department`";
                                         $result = $conn->query($sql);
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
@@ -205,28 +205,30 @@ if ($result->num_rows > 0) {
                             <div>
                                 <label>Programme: </label>
 
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                <option selected>All</option>
-                                <?php
-                                if ($conn->connect_error) {
-                                    die("Connection failed: " . $conn->connect_error);
-                                } else {
-                                    $sql = "SELECT `program_Id`, `program_Name` FROM `program`";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<option value="' . $row["program_Id"] . '">' . $row["program_Name"] . '</option>';
+                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
+                                    aria-label=".form-select-lg example">
+                                    <option selected>All</option>
+                                    <?php
+                                    if ($conn->connect_error) {
+                                        die("Connection failed: " . $conn->connect_error);
+                                    } else {
+                                        $sql = "SELECT `program_Id`, `program_Name` FROM `program`";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo '<option value="' . $row["program_Id"] . '">' . $row["program_Name"] . '</option>';
+                                            }
                                         }
                                     }
-                                }
-                                ?>
+                                    ?>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="filter_field">
                                 <label>Semester: </label>
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg" aria-label=".form-select-lg example">
+                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg"
+                                    aria-label=".form-select-lg example">
                                     <option selected>All</option>
                                     <option value="1">CSE</option>
                                     <option value="2">MCJ</option>
@@ -247,7 +249,8 @@ if ($result->num_rows > 0) {
             </section>
             <section class="content">
                 <div class="container-fluid">
-                    <form method="POST" action="course-taken.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
+                    <form method="POST"
+                        action="course-taken.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
                         <div class="row">
                             <div class="col-md-12">
                                 <table id="tableID" class="display" style="width:100%">
@@ -269,7 +272,8 @@ if ($result->num_rows > 0) {
                                 </table>
                                 <div class="row mt-4 p-2">
                                     <div class="col-md-2 offset-md-5">
-                                        <button type="submit" name="submit" class="btn btn-primary">Save Selected</button>
+                                        <button type="submit" name="submit" class="btn btn-primary">Save
+                                            Selected</button>
                                     </div>
                                 </div>
 
@@ -290,11 +294,14 @@ if ($result->num_rows > 0) {
 
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
 
     <!-- jQuery library file -->
@@ -305,7 +312,8 @@ if ($result->num_rows > 0) {
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
     </script>
 
-    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
     </script>
 
 
@@ -315,26 +323,26 @@ if ($result->num_rows > 0) {
 
     <!-- Page specific script -->
     <script>
-        /* Initialization of datatable */
-        $(document).ready(function() {
-            $('#tableID').DataTable({});
-        });
+    /* Initialization of datatable */
+    $(document).ready(function() {
+        $('#tableID').DataTable({});
+    });
     </script>
     <script>
-        $("button").on("click", function() {
-            var id = $(this).data('id');
-            var question = $(this).data('question');
-            var question_Type = $(this).data('qt');
-            var alumni = $(this).data('alumni');
-            var employer = $(this).data('employer');
-            var student = $(this).data('student');
-            var parent = $(this).data('parent');
-            var teacher = $(this).data('teacher');
-            console.log(alumni, employer, student, parent, teacher);
-            $('#question_Id').val(id);
-            $('#question').val(question);
-            $('#question_Type').val(question_Type);
-        });
+    $("button").on("click", function() {
+        var id = $(this).data('id');
+        var question = $(this).data('question');
+        var question_Type = $(this).data('qt');
+        var alumni = $(this).data('alumni');
+        var employer = $(this).data('employer');
+        var student = $(this).data('student');
+        var parent = $(this).data('parent');
+        var teacher = $(this).data('teacher');
+        console.log(alumni, employer, student, parent, teacher);
+        $('#question_Id').val(id);
+        $('#question').val(question);
+        $('#question_Type').val(question_Type);
+    });
     </script>
 </body>
 
