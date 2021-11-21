@@ -38,6 +38,7 @@
 <?php
 session_start();
 $feedbacker_id = 8;
+
 include './includes/conn.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -47,7 +48,7 @@ if ($conn->connect_error) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
-            //$feedback_Id = $_GET['id'];
+            $feedback_Id = $_GET['id'];
             //echo $feedback_Id . "hi";
             $_SESSION['feedback_Id'] = $feedback_Id;
             $feedback_type = $_GET['issued_For'];
@@ -95,21 +96,21 @@ if ($conn->connect_error) {
                     //echo $feedback_id . "Field " . htmlspecialchars($key) . " " . $feedbacker_id . "is " . htmlspecialchars($value) . "<br>";
                     $v = 1;
                 } else {
-                    echo $conn->error;
+                    //echo $conn->error;
                     $v = 0;
                 }
             }
         }
         if ($v == 1) {
             echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
-                <strong>Department </strong> Feedback Submitted !!
+                <strong>Student </strong> Feedback Submitted !!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>';
         } else {
             echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
-                <strong>Department </strong> Failed !!
+                <strong>Student Feedback </strong> Failed !!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
