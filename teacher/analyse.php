@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $id = $_POST["id"];
         $type = $_POST["feedback_Type"];
+        $chart_Type = $_POST["chart_Type"];
         if ($type == 'rating') {
             if ($id == 'all') {
                 $filter = "SELECT q.question_Id, `question`, `question_Type`,AVG(answer) as ans FROM `question`as q,`feedback_receiveables` as fr,`feedback` as f 
@@ -22,12 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 WHERE question_Type='$type' and `issued_By`='$teacher_Id' and f.feedback_id=$id and q.question_Id=f.question_Id GROUP BY q.question_Id";
             }
             $result = $conn->query($filter);
+            $color = array('Aqua', 'BlueViolet', 'Chocolate', 'CornflowerBlue', 'Cyan', 'DarkMagenta', 'DeepPink');
             $r = "<canvas id='myChart'></canvas>
             <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js'></script>
             <script>
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
-            type: 'bar',
+            type: '" . $chart_Type . "',
             data: {
             labels:['Question'";
             $i = 0;
@@ -49,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $r = $r . "{
                     data:[" . $ans[$j] . "],
                     label: '" . $q[$j] . "',
-                    borderColor:'lightblue',
-                    backgroundColor:'blue',
+                    borderColor:'" . $color[$j] . "',
+                    backgroundColor:'" . $color[$j] . "',
                 },";
             }
             $r = $r . "],
@@ -162,6 +164,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         aria-label=".form-select-lg example" name="feedback_Type">
                                         <option selected value="rating">Rating</option>
                                         <option value="long">Long</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="filter_field">
+                                    <label>Chart Type: </label>
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
+                                        aria-label=".form-select-lg example" name="chart_Type">
+                                        <option selected value="bar">Bar</option>
+                                        <option value="line">Line</option>
+                                        <option value="polarArea">Polar Area</option>
                                     </select>
                                 </div>
                             </div>
