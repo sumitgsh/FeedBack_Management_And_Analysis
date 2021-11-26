@@ -7,7 +7,8 @@
     <title>FeedBack Management| Admin Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -19,19 +20,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     } else {
-        if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employeer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
+        if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
             echo "error";
             die();
         } else {
             $question = $_POST["question"];
             $question_Type = $_POST["question_Type"];
             $alumni =  isset($_POST['alumni']) ? $_POST["alumni"] : "";
-            $employeer = isset($_POST['emoloyeer']) ? $_POST["employeer"] : "";
+            $employer = isset($_POST['employer']) ? $_POST["employer"] : "";
             $parent = isset($_POST['parent']) ? $_POST["parent"] : "";
             $student = isset($_POST['student']) ? $_POST["student"] : "";
             $teacher = isset($_POST['teacher']) ? $_POST["teacher"] : "";
 
-            $a = array($alumni, $employeer, $parent, $student, $teacher);
+            $a = array($alumni, $employer, $parent, $student, $teacher);
             try {
                 $sql = "INSERT INTO `question`(`question`, `question_Type`) VALUES ('$question','$question_Type')";
                 $conn->query($sql);
@@ -40,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (!empty($value)) {
                         $sql = "INSERT INTO `questioncategory`(`category_Id`, `question_Id`) VALUES ('$value','$id')";
                         $conn->query($sql);
+                        echo $conn->error;
                     }
                 }
                 echo "Qustion Added";
@@ -93,11 +95,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="question">Type your Question ?</label><br>
-                                            <textarea id="question" class="form-control" name="question" rows="4" cols="50" required></textarea>
+                                            <textarea id="question" class="form-control" name="question" rows="4"
+                                                cols="50" required></textarea>
                                         </div>
                                         <div class="form-group">
                                             <label for="question_Type">Question Type</label><br>
-                                            <select name="question_Type" id="question_Type" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                            <select name="question_Type" id="question_Type"
+                                                class="form-control select2 select2-danger"
+                                                data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="rating">Rating</option>
                                                 <option value="long_Answer">Long Answer</option>
                                             </select><br>
@@ -106,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <label for="question_Category">Question Category</label><br>
                                             <input type="checkbox" name="alumni" value="alumni">
                                             <label for="alumni"> Alumni</label><br>
-                                            <input type="checkbox" name="employeer" value="employeer">
+                                            <input type="checkbox" name="employer" value="employer">
                                             <label for="employer"> Employer</label><br>
                                             <input type="checkbox" name="parent" value="parent">
                                             <label for="parent"> Parent</label><br>
@@ -149,9 +154,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function() {
-            bsCustomFileInput.init();
-        });
+    $(function() {
+        bsCustomFileInput.init();
+    });
     </script>
 </body>
 

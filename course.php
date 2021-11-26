@@ -13,7 +13,7 @@
 </head>
 
 <?php
-include '../includes/conn.php';
+include './includes/conn.php';
 //include './check.php';
 $$student_Id = 8;
 if ($conn->connect_error) {
