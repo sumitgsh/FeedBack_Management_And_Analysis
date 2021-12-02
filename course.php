@@ -13,7 +13,7 @@
 </head>
 
 <?php
-include '../includes/conn.php';
+include './includes/conn.php';
 //include './check.php';
 $$student_Id = 8;
 if ($conn->connect_error) {
@@ -37,12 +37,10 @@ if ($conn->connect_error) {
                 while ($rowFeedback = $feedbackIssueResult->fetch_assoc()) {
                     $feedback_R_Id = $row["feedback_R_Id"];
                     $status = $row["status"];
-                    
-                    }
-                    }else{
-                        
-                    }
-                    $r = $r . '<tr>
+                }
+            } else {
+            }
+            $r = $r . '<tr>
                 <td>' . $course_Name . '</td>
                 <td>' . $dept_Name . '</td>
                 <td>' . ucwords($session) . '</td>
@@ -50,9 +48,7 @@ if ($conn->connect_error) {
                 <td><button type="button"   
                 "> <a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher//issue-feedback.php?course_Taught_Id=' . $course_Taught_Id . '">Add Student</a> </button></td>
             </tr><br>';
-                }
-            }
-        
+        }
     }
 }
 

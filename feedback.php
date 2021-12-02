@@ -37,10 +37,15 @@ if ($conn->connect_error) {
             $course_Taught_Id = $row["course_Taught_Id"];
             $id = $row["feedback_R_Id"];
             $issued_For = $row["issued_For"];
-
             $date = date("Y-m-d");
             if ($date >= $issue_date & $date <= $closing_date) {
-                $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
+                $check = "SELECT `feedback_id`, `feedbacker_id` FROM `feedback` WHERE feedbacker_id=$student_Id and feedback_id=$id";
+                $rCheck = $conn->query($check);
+                if ($result->num_rows > 0) {
+                    $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
+                } else {
+                    $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
+                }
             } else {
                 $b = '<button type="button" class="btn btn-primary" disabled>Unavailable</button';
             }
