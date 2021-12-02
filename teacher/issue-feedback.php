@@ -1,39 +1,44 @@
 <?php
 
 include '../includes/conn.php';
+
 session_start();
 
 $department_Id = $_SESSION['department_Id'];
 
-$selected_students = "";
-
-// Show the Selected Students in the Dashboard after selecting based on student_ID
-
-$stu_sel_det = "SELECT student.student_Id,roll_No,department.name,program_Name,semester FROM student,department,program,coursetaken where student.program_Id=program.program_Id 
-                    AND program.department_Id=department.department_Id AND student.student_Id=coursetaken.student_Id";
-
-$result = $conn->query($stu_sel_det);
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-
-        $student_Id = $row["student_Id"];
-        $roll_No = $row["roll_No"];
-        $department = $row["name"];
-        $program_Name = $row["program_Name"];
-        $semester = $row["semester"];
-
-        $selected_students = $selected_students . '<tr>
-                <td>' . $roll_No . '</td>
-                <td>' . ucwords($department) . '</td>
-                <td>' . ucwords($program_Name) . '</td>
-                <td>' . ucwords($semester) . '</td></tr>';
-    }
+// Filter the Student based on selectec filter
+if (isset($_POST['filter_stud'])) {
 }
 
+// Show the Selected Students in the Dashboard after selecting based on student_ID
+if (isset($_POST['stud_sel_sub']) || isset($_GET['course_Taught_Id'])) {
+    $selected_students = "";
 
+    $stu_sel_det = "SELECT student.student_Id,roll_No,department.name,program_Name,semester FROM student,department,program,coursetaken where student.program_Id=program.program_Id 
+                    AND program.department_Id=department.department_Id AND student.student_Id=coursetaken.student_Id";
 
+    $result = $conn->query($stu_sel_det);
 
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+
+            $student_Id = $row["student_Id"];
+            $roll_No = $row["roll_No"];
+            $department = $row["name"];
+            $program_Name = $row["program_Name"];
+            $semester = $row["semester"];
+
+            $selected_students = $selected_students . '<tr>
+                    <td>' . $roll_No . '</td>
+                    <td>' . ucwords($department) . '</td>
+                    <td>' . ucwords($program_Name) . '</td>
+                    <td>' . ucwords($semester) . '</td>
+                    <td><button id="del_sel" class="btn btn-danger" class="addAttr" 
+                     data-course_taught_id="' . $_GET['course_Taught_Id'] . '" data-student_id="' . $student_Id . '"> Drop</button></td>
+                </tr>';
+        }
+    }
+}
 
 
 //Selects all the students belong to the department
@@ -61,6 +66,7 @@ if ($result->num_rows > 0) {
                 <td><input type="checkbox" name="student_Ids[]" value="' . $student_Id . '" ></td></tr>';
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +122,7 @@ if ($result->num_rows > 0) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-12">
-                            <h1>Selected Students</h1>
+                            <h1>Course Taught > Selected Students</h1>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
@@ -125,14 +131,14 @@ if ($result->num_rows > 0) {
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <table id="" class="" style="width:100%">
+                            <table id="Selected_Students" class="" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Roll No</th>
                                         <th>Department</th>
                                         <th>Programme</th>
                                         <th>Semester</th>
-                                        <th></th>
+                                        <th>Select</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -140,10 +146,6 @@ if ($result->num_rows > 0) {
                                     <?php
                                     echo $selected_students;
                                     ?>
-                                    <tr>
-
-
-                                    </tr>
                                 </tbody>
                             </table>
 
@@ -174,75 +176,79 @@ if ($result->num_rows > 0) {
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-md-12">
+                        <div class="col-md-12">
                             <h5>Filter By:<h5>
                         </div>
                     </div>
-                    <div class="row mb-2">
-                        
-                        <div class="col-md-3">
-                            <div>
-                                <label>Department: </label>
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                <option selected>All</option>
-                                    <?php
-                                    if ($conn->connect_error) {
-                                        die("Connection failed: " . $conn->connect_error);
-                                    } else {
-                                        $sql = "SELECT `department_Id`, `name` FROM `department`";
-                                        $result = $conn->query($sql);
-                                        if ($result->num_rows > 0) {
-                                            while ($row = $result->fetch_assoc()) {
-                                                echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
+                    <form method="POST" action="filter_stud.php">
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <div>
+                                    <label>Department: </label>
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                        <option selected>All</option>
+                                        <?php
+                                        if ($conn->connect_error) {
+                                            die("Connection failed: " . $conn->connect_error);
+                                        } else {
+                                            $sql = "SELECT `department_Id`, `name` FROM `department`";
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
+                                                }
                                             }
                                         }
-                                    }
-                                    ?>
-                                </select>
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div>
-                                <label>Programme: </label>
+                            <div class="col-md-5">
+                                <div>
+                                    <label>Programme: </label>
 
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                <option selected>All</option>
-                                <?php
-                                if ($conn->connect_error) {
-                                    die("Connection failed: " . $conn->connect_error);
-                                } else {
-                                    $sql = "SELECT `program_Id`, `program_Name` FROM `program`";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<option value="' . $row["program_Id"] . '">' . $row["program_Name"] . '</option>';
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                        <option selected>All</option>
+                                        <?php
+                                        if ($conn->connect_error) {
+                                            die("Connection failed: " . $conn->connect_error);
+                                        } else {
+                                            $sql = "SELECT `program_Id`, `program_Name` FROM `program`";
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo '<option value="' . $row["program_Id"] . '">' . $row["program_Name"] . '</option>';
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                                ?>
-                                </select>
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="filter_field">
+                                    <label>Semester: </label>
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg" aria-label=".form-select-lg example">
+                                        <option selected>All</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 d-flex align-items-center" style="margin-top: 1rem;">
+                                <div>
+                                    <button class="btn btn-success">Search</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="filter_field">
-                                <label>Semester: </label>
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg" aria-label=".form-select-lg example">
-                                    <option selected>All</option>
-                                    <option value="1">CSE</option>
-                                    <option value="2">MCJ</option>
-                                    <option value="3">MBBT</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 d-flex align-items-center" style="margin-top: 1rem;">
-                            <div>
-                                <button class="btn btn-success">Search</button>
-                            </div>
-                        </div>
-
-                    </div>
-
+                    </form>
                 </div><!-- /.container-fluid -->
             </section>
             <section class="content">
@@ -250,7 +256,7 @@ if ($result->num_rows > 0) {
                     <form method="POST" action="course-taken.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
                         <div class="row">
                             <div class="col-md-12">
-                                <table id="tableID" class="display" style="width:100%">
+                                <table id="all_students" class="display" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Roll No</th>
@@ -269,7 +275,7 @@ if ($result->num_rows > 0) {
                                 </table>
                                 <div class="row mt-4 p-2">
                                     <div class="col-md-2 offset-md-5">
-                                        <button type="submit" name="submit" class="btn btn-primary">Save Selected</button>
+                                        <button type="submit" name="stud_sel_sub" class="btn btn-primary">Save Selected</button>
                                     </div>
                                 </div>
 
@@ -316,26 +322,43 @@ if ($result->num_rows > 0) {
     <!-- Page specific script -->
     <script>
         /* Initialization of datatable */
+        var myTable="";
         $(document).ready(function() {
-            $('#tableID').DataTable({});
+            myTable = $('#all_students').DataTable({});
+        });
+
+        $(document).ready(function() {
+            $('#Selected_Students').DataTable({});
+        });
+
+        
+       
+        
+        $("#del_sel").on("click", function() {
+            var course_Taught_Id = $(this).data('course_taught_id');
+            var student_Id = $(this).data('student_id');
+
+            console.log(student_Id);
+
+            $.ajax({
+                type: "POST",
+                url: "drop_sel_stud.php",
+                data: {
+                    'course_Taught_Id': course_Taught_Id,
+                    'student_Id':student_Id
+                },
+                success: function(result) {
+                    alert("Successfuly Deleted");
+                    window.location.reload()
+                    
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
         });
     </script>
-    <script>
-        $("button").on("click", function() {
-            var id = $(this).data('id');
-            var question = $(this).data('question');
-            var question_Type = $(this).data('qt');
-            var alumni = $(this).data('alumni');
-            var employer = $(this).data('employer');
-            var student = $(this).data('student');
-            var parent = $(this).data('parent');
-            var teacher = $(this).data('teacher');
-            console.log(alumni, employer, student, parent, teacher);
-            $('#question_Id').val(id);
-            $('#question').val(question);
-            $('#question_Type').val(question_Type);
-        });
-    </script>
+
 </body>
 
 </html>

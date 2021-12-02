@@ -34,9 +34,9 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
   
       <li class="nav-item">
-          <a href="issue-feedback.php" class="nav-link">
+          <a href="course-taught.php" class="nav-link">
             <i class="far fa-edit"></i>
-            <p>Issue Feedback</p>
+            <p>Course Taught</p>
           </a>
 
         </li>

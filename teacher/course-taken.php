@@ -29,7 +29,7 @@ foreach($student_Ids as $key=>$value){
 
  if($flag)
  {
-    header("Location:issue-feedback.php");
+    header("Location:issue-feedback.php?course_Taught_Id=".$course_Taught_Id);
  }
 
 
