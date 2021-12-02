@@ -17,7 +17,6 @@ if (isset($_POST['stud_sel_sub']) || isset($_GET['course_Taught_Id'])) {
     $stu_sel_det = "SELECT student.student_Id,roll_No,department.name,program_Name,semester FROM student,department,program,coursetaken where student.program_Id=program.program_Id 
                     AND program.department_Id=department.department_Id AND student.student_Id=coursetaken.student_Id";
 
-<<<<<<< HEAD
     $result = $conn->query($stu_sel_det);
 
     if ($result->num_rows > 0) {
@@ -38,23 +37,6 @@ if (isset($_POST['stud_sel_sub']) || isset($_GET['course_Taught_Id'])) {
                      data-course_taught_id="' . $_GET['course_Taught_Id'] . '" data-student_id="' . $student_Id . '"> Drop</button></td>
                 </tr>';
         }
-=======
-$result = $conn->query($stu_sel_det);
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $student_Id = $row["student_Id"];
-        $roll_No = $row["roll_No"];
-        $department = $row["name"];
-        $program_Name = $row["program_Name"];
-        $semester = $row["semester"];
-
-        $selected_students = $selected_students . '<tr>
-                <td>' . $roll_No . '</td>
-                <td>' . ucwords($department) . '</td>
-                <td>' . ucwords($program_Name) . '</td>
-                <td>' . ucwords($semester) . '</td></tr>';
->>>>>>> 9771f9ff9fab767a37c0a27b00042bc2f8e39812
     }
 }
 
@@ -198,7 +180,6 @@ if ($result->num_rows > 0) {
                             <h5>Filter By:<h5>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <form method="POST" action="filter_stud.php">
                         <div class="row mb-2">
                             <div class="col-md-3">
@@ -216,32 +197,12 @@ if ($result->num_rows > 0) {
                                                 while ($row = $result->fetch_assoc()) {
                                                     echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
                                                 }
-=======
-                    <div class="row mb-2">
-
-                        <div class="col-md-3">
-                            <div>
-                                <label>Department: </label>
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
-                                    aria-label=".form-select-lg example">
-                                    <option selected>All</option>
-                                    <?php
-                                    if ($conn->connect_error) {
-                                        die("Connection failed: " . $conn->connect_error);
-                                    } else {
-                                        $sql = "SELECT `department_Id`, `name`, FROM `department`";
-                                        $result = $conn->query($sql);
-                                        if ($result->num_rows > 0) {
-                                            while ($row = $result->fetch_assoc()) {
-                                                echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
->>>>>>> 9771f9ff9fab767a37c0a27b00042bc2f8e39812
                                             }
                                         }
                                         ?>
                                     </select>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             <div class="col-md-5">
                                 <div>
                                     <label>Programme: </label>
@@ -279,42 +240,6 @@ if ($result->num_rows > 0) {
                                         <option value="8">8</option>
                                     </select>
                                 </div>
-=======
-                        </div>
-                        <div class="col-md-5">
-                            <div>
-                                <label>Programme: </label>
-
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
-                                    aria-label=".form-select-lg example">
-                                    <option selected>All</option>
-                                    <?php
-                                    if ($conn->connect_error) {
-                                        die("Connection failed: " . $conn->connect_error);
-                                    } else {
-                                        $sql = "SELECT `program_Id`, `program_Name` FROM `program`";
-                                        $result = $conn->query($sql);
-                                        if ($result->num_rows > 0) {
-                                            while ($row = $result->fetch_assoc()) {
-                                                echo '<option value="' . $row["program_Id"] . '">' . $row["program_Name"] . '</option>';
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="filter_field">
-                                <label>Semester: </label>
-                                <select style="height:2.5rem;width:100%;" class="form-select form-select-lg"
-                                    aria-label=".form-select-lg example">
-                                    <option selected>All</option>
-                                    <option value="1">CSE</option>
-                                    <option value="2">MCJ</option>
-                                    <option value="3">MBBT</option>
-                                </select>
->>>>>>> 9771f9ff9fab767a37c0a27b00042bc2f8e39812
                             </div>
 
                             <div class="col-md-2 d-flex align-items-center" style="margin-top: 1rem;">
@@ -328,8 +253,7 @@ if ($result->num_rows > 0) {
             </section>
             <section class="content">
                 <div class="container-fluid">
-                    <form method="POST"
-                        action="course-taken.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
+                    <form method="POST" action="course-taken.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
                         <div class="row">
                             <div class="col-md-12">
                                 <table id="all_students" class="display" style="width:100%">
@@ -351,12 +275,7 @@ if ($result->num_rows > 0) {
                                 </table>
                                 <div class="row mt-4 p-2">
                                     <div class="col-md-2 offset-md-5">
-<<<<<<< HEAD
                                         <button type="submit" name="stud_sel_sub" class="btn btn-primary">Save Selected</button>
-=======
-                                        <button type="submit" name="submit" class="btn btn-primary">Save
-                                            Selected</button>
->>>>>>> 9771f9ff9fab767a37c0a27b00042bc2f8e39812
                                     </div>
                                 </div>
 
@@ -377,14 +296,11 @@ if ($result->num_rows > 0) {
 
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
 
     <!-- jQuery library file -->
@@ -395,8 +311,7 @@ if ($result->num_rows > 0) {
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
     </script>
 
-    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
     </script>
 
 
@@ -406,7 +321,6 @@ if ($result->num_rows > 0) {
 
     <!-- Page specific script -->
     <script>
-<<<<<<< HEAD
         /* Initialization of datatable */
         var myTable="";
         $(document).ready(function() {
@@ -435,36 +349,13 @@ if ($result->num_rows > 0) {
                 },
                 success: function(result) {
                     alert("Successfuly Deleted");
-                    window.location.reload()
-                    
+                    window.location.reload();
                 },
                 error: function(result) {
                     alert('error');
                 }
             });
         });
-=======
-    /* Initialization of datatable */
-    $(document).ready(function() {
-        $('#tableID').DataTable({});
-    });
-    </script>
-    <script>
-    $("button").on("click", function() {
-        var id = $(this).data('id');
-        var question = $(this).data('question');
-        var question_Type = $(this).data('qt');
-        var alumni = $(this).data('alumni');
-        var employer = $(this).data('employer');
-        var student = $(this).data('student');
-        var parent = $(this).data('parent');
-        var teacher = $(this).data('teacher');
-        console.log(alumni, employer, student, parent, teacher);
-        $('#question_Id').val(id);
-        $('#question').val(question);
-        $('#question_Type').val(question_Type);
-    });
->>>>>>> 9771f9ff9fab767a37c0a27b00042bc2f8e39812
     </script>
 
 </body>
