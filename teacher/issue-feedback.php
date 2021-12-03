@@ -21,7 +21,6 @@ if (isset($_POST['stud_sel_sub']) || isset($_GET['course_Taught_Id'])) {
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-
             $student_Id = $row["student_Id"];
             $roll_No = $row["roll_No"];
             $department = $row["name"];
