@@ -3,72 +3,73 @@ session_start();
 include './includes/conn.php';
 
 if ($conn->connect_error) {
-	die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 } else {
-	if (isset($_POST['submit'])) {
-		$email = mysqli_escape_string($conn, $_POST['email']);
-		$password = mysqli_escape_string($conn, $_POST['password']);
-		$message = "";
+    if (isset($_POST['submit'])) {
+        $email = mysqli_escape_string($conn, $_POST['email']);
+        $password = mysqli_escape_string($conn, $_POST['password']);
+        $message = "";
 
-		//Remember me 
-		if (isset($_POST["remember_me"])) {
-			if ($_POST["remember_me"] == '1') {
-				//For 30days it will be saved 
-				$hour = time() + 3600 * 24 * 30;
-				setcookie('email', $email, $hour);
-				setcookie('password', $password, $hour);
-			}
-		}
+        //Remember me 
+        if (isset($_POST["remember_me"])) {
+            if ($_POST["remember_me"] == '1') {
+                //For 30days it will be saved 
+                $hour = time() + 3600 * 24 * 30;
+                setcookie('email', $email, $hour);
+                setcookie('password', $password, $hour);
+            }
+        }
 
-		//Check whether email exist in the database along with verified or not
-		$query = "SELECT * FROM student WHERE email = '$email'";
-		$result = mysqli_query($conn, $query);
+        //Check whether email exist in the database along with verified or not
+        $query = "SELECT * FROM student WHERE email = '$email'";
+        $result = mysqli_query($conn, $query);
 
-		if (mysqli_num_rows($result) > 0) {
-			while ($row = $result->fetch_assoc()) {
-				$row['verified'];
-				//check whether email is verified
-				if ($row['verified'] == false) {
-					echo '<script type="text/javascript">';
-					echo 'alert("Your Email is not Verified !! Please verify");';
-					echo 'window.location.href = "login.php";';
-					echo '</script>';
-					exit(0);
-				}
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $row['verified'];
+                //check whether email is verified
+                if ($row['verified'] == false) {
+                    echo '<script type="text/javascript">';
+                    echo 'alert("Your Email is not Verified !! Please verify");';
+                    echo 'window.location.href = "login.php";';
+                    echo '</script>';
+                    exit(0);
+                }
 
-				//Password verify after getting the email
-				$hash = $row['password'];
-				// Verify password based on the hash returned by the above query	
-				if (password_verify($password, $hash)) {
-					$_SESSION['roll_No'] = $row['roll_No'];
-					$_SESSION['name'] = $row['name'];
-					$_SESSION['email'] = $row['email'];
-					$_SESSION['program_Id'] = $row['program_Id'];
-					$_SESSION['parent_Phone_No'] = $row['parent_Phone_No'];
-					$_SESSION['parent_Name'] = $row['parent_Name'];
-					$_SESSION['semester'] = $row['semester'];
-					$_SESSION['relation'] = $row['relation'];
-					$_SESSION['success'] = "You are now logged in";
+                //Password verify after getting the email
+                $hash = $row['password'];
+                // Verify password based on the hash returned by the above query	
+                if (password_verify($password, $hash)) {
+                    $_SESSION['student_Id'] = $row['student_Id'];
+                    $_SESSION['roll_No'] = $row['roll_No'];
+                    $_SESSION['name'] = $row['name'];
+                    $_SESSION['email'] = $row['email'];
+                    $_SESSION['program_Id'] = $row['program_Id'];
+                    $_SESSION['parent_Phone_No'] = $row['parent_Phone_No'];
+                    $_SESSION['parent_Name'] = $row['parent_Name'];
+                    $_SESSION['semester'] = $row['semester'];
+                    $_SESSION['relation'] = $row['relation'];
+                    $_SESSION['success'] = "You are now logged in";
 
-					header('location:index.php');
-				} else {
-					//Password did not matched with the hashed One
-					echo '<script type="text/javascript">';
-					echo 'alert("Password did Not Matched!!");';
-					echo 'window.location.href = "login.php";';
-					echo '</script>';
-					//   header('location: login.php');
-				}
-			}
-		} else {
+                    header('location:index.php');
+                } else {
+                    //Password did not matched with the hashed One
+                    echo '<script type="text/javascript">';
+                    echo 'alert("Password did Not Matched!!");';
+                    echo 'window.location.href = "login.php";';
+                    echo '</script>';
+                    //   header('location: login.php');
+                }
+            }
+        } else {
 
-			# Email Id did not matched..
-			echo '<script type="text/javascript">';
-			echo 'alert("Email Id Did Not Matched!!");';
-			echo 'window.location.href = "login.php";';
-			echo '</script>';
-		}
-	}
+            # Email Id did not matched..
+            echo '<script type="text/javascript">';
+            echo 'alert("Email Id Did Not Matched!!");';
+            echo 'window.location.href = "login.php";';
+            echo '</script>';
+        }
+    }
 }
 ?>
 
