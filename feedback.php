@@ -33,12 +33,11 @@
 
 <?php
 include './includes/conn.php';
-//include './check.php';
-$student_Id = 8;
+include './check.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-    $feedback = "SELECT department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
+    $feedback = "SELECT DISTINCT department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
                 issue_date,closing_date,feedback_receiveables.status,teacher.name as tName,feedback_receiveables.feedback_R_Id, feedback_receiveables.issued_For FROM`coursetaken`,`coursetaught`,`program`,`department`,
                 `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND coursetaken.course_Taught_Id=coursetaught.course_Taught_Id AND
                  coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id AND coursetaken.student_Id=$student_Id AND feedback_receiveables.issued_For='student'
@@ -60,13 +59,13 @@ if ($conn->connect_error) {
             $check = "SELECT `feedback_id`, `feedbacker_id` FROM `feedback` WHERE feedbacker_id=$student_Id and feedback_id=$id";
             $rCheck = $conn->query($check);
             if ($date >= $issue_date & $date <= $closing_date) {
-                if ($result->num_rows > 0) {
+                if ($rCheck->num_rows > 0) {
                     $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
                 } else {
                     $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
                 }
             } else {
-                if ($result->num_rows > 0) {
+                if ($rCheck->num_rows > 0) {
                     $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
                 } else {
                     $b = '<button type="button" class="btn btn-primary" disabled>Unavailable</button';
