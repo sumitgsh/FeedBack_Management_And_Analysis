@@ -1,26 +1,22 @@
 <?php
 
-include '../includes/conn.php';
+include './includes/conn.php';
 
 ?>
 
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <!-- Brand Logo -->
-  <a href="dashboard.php" class="brand-link">
-    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">Dashboard</span>
-  </a>
+
 
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <img src="./teacher/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block"><?php echo $_SESSION['name'] ?></a>
+        <!-- <a href="#" class="d-block"><?php echo $_SESSION['name'] ?></a> -->
       </div>
     </div>
 
@@ -39,25 +35,26 @@ include '../includes/conn.php';
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-  
-      <li class="nav-item">
-          <a href="course-taught.php" class="nav-link">
-            <i class="far fa-edit"></i>
-            <p>Course Taught</p>
+
+        <li class="nav-item">
+          <a href="complete-profile.php" class="nav-link">
+
+            <i class="fas fa-list-ul"></i>
+            <p>Complete Profile</p>
           </a>
 
         </li>
         <li class="nav-item">
-          <a href="issued-feedback.php" class="nav-link">
-            <i class="fas fa-comments"></i>
-            <p>Issued Feedback</p>
+          <a href="profile.php" class="nav-link">
+            <i class="fas fa-eye"></i>
+            <p>Update/View Profile</p>
           </a>
 
         </li>
         <li class="nav-item">
-          <a href="analyse.php" class="nav-link">
-            <i class="fas fa-chart-bar"></i>
-            <p>Analyse </p>
+          <a href="feedback.php" class="nav-link">
+            <i class="far fa-edit"></i></i>
+            <p>Issued Feedback </p>
           </a>
 
         </li>
