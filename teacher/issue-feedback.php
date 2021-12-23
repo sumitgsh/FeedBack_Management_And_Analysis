@@ -10,6 +10,8 @@ $department_Id = $_SESSION['department_Id'];
 if (isset($_POST['filter_stud'])) {
 }
 
+//Set to global because it will be used in the Show details to filter values..
+$sel_roll_No=array();
 // Show the Selected Students in the Dashboard after selecting based on student_ID
 if (isset($_POST['stud_sel_sub']) || isset($_GET['course_Taught_Id'])) {
     $selected_students = "";
@@ -43,6 +45,11 @@ if (isset($_POST['stud_sel_sub']) || isset($_GET['course_Taught_Id'])) {
 //Selects all the students belong to the department
 // select student_Id,department.name,program_Name,semester from student,department,program where department.department_Id='CSE_TU_2';
 
+//filtering 
+// $student_detail = "SELECT student.student_Id,roll_No,department.name,program_Name,semester FROM student,department,program,coursetaken where student.program_Id=program.program_Id 
+// AND program.department_Id=department.department_Id AND coursetaken.course_Taught_Id=$course_Taught_Id AND student.student_Id NOT IN(coursetaken.student_Id)";
+
+
 $student_detail = "SELECT student_Id,roll_No,department.name,program_Name,semester FROM student,department,program where student.program_Id=program.program_Id 
                     AND program.department_Id=department.department_Id";
 
@@ -50,6 +57,10 @@ $result = $conn->query($student_detail);
 $r = "";
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+
+
+
+
 
         $student_Id = $row["student_Id"];
         $roll_No = $row["roll_No"];
