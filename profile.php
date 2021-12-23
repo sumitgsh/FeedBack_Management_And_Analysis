@@ -21,8 +21,9 @@
 </head>
 <?php
 include './includes/conn.php';
-$department_Id = 'cse';
-$student_Id = '8';
+include "./check.php";
+//$student_Id = 8;
+//$department_Id = 'cse';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($conn->connect_error) {
@@ -53,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-$student = "SELECT `roll_No`, `name`, `email`, `program_Id`, `parent_Phone_No`, `parent_Name`, `verified`, `semester`, `relation` FROM `student` where student_Id=$student_Id ";
+$student = "SELECT `roll_No`, `name`, `email`, student.program_Id, `parent_Phone_No`, `parent_Name`, `verified`, `semester`, `relation`,`department_id` FROM `student`,`program` where student_Id=$student_Id AND program.program_Id=student.program_Id";
 $result = $conn->query($student);
 $r = "";
 if ($result->num_rows > 0) {
@@ -63,6 +64,8 @@ if ($result->num_rows > 0) {
         $email = empty($row['email']) ? "" : $row['email'];
         $semester = empty($row['semester']) ? "" : $row['semester'];
         $program_Id = empty($row['program_Id']) ? "" : $row['program_Id'];
+        $department_Id = empty($row['department_id']) ? "" : $row['department_id'];
+        //echo $department_Id;
         $parent_Name = empty($row['parent_Name']) ? "" : $row['parent_Name'];
         $parent_Phone_No = empty($row['parent_Phone_No']) ? "" : $row['parent_Phone_No'];
         $relation = empty($row['relation']) ? "" : $row['relation'];
@@ -157,6 +160,8 @@ if ($result->num_rows > 0) {
                                                 $programid = "SELECT `program_Id`, `program_Name` FROM `program` WHERE department_Id='$department_Id'";
                                                 $result = $conn->query($programid);
                                                 $pid = "";
+                                                echo $department_Id . "ji";
+                                                echo "hello:";
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
                                                         if ($program_Id == $row["program_Id"])
