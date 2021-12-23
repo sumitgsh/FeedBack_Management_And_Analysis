@@ -27,9 +27,9 @@ if ($conn->connect_error) {
 
 				//Password verify after getting the email
 				$hash = $row['password'];
-				// Verify password based on the hash returned by the above query	
-				// if (password_verify($password, $hash)) {
-				if ($hash == $password) {
+				//Verify password based on the hash returned by the above query	
+				if (password_verify($password, $hash)) {
+					//if ($hash == $password) {
 					$_SESSION['teacher_Id'] = $row['teacher_Id'];
 					$_SESSION['name'] = $row['name'];
 					$_SESSION['email'] = $row['email'];

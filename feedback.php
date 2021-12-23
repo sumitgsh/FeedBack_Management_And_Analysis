@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Taught</title>
+    <title>Feedback List</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <!-- Datatable plugin CSS file -->
@@ -23,7 +23,7 @@ if ($conn->connect_error) {
                 issue_date,closing_date,feedback_receiveables.status,teacher.name as tName,feedback_receiveables.feedback_R_Id, feedback_receiveables.issued_For FROM`coursetaken`,`coursetaught`,`program`,`department`,
                 `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND coursetaken.course_Taught_Id=coursetaught.course_Taught_Id AND
                  coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id AND coursetaken.student_Id=$student_Id AND feedback_receiveables.issued_For='student'
-                  AND (feedback_receiveables.issuer_Domain=coursetaught.course_Taught_Id OR feedback_receiveables.issued_By='hod') ORDER BY closing_date DESC";
+                  AND feedback_receiveables.status!='stopped' AND (feedback_receiveables.issuer_Domain=coursetaught.course_Taught_Id OR feedback_receiveables.issued_By='hod') ORDER BY closing_date DESC";
     $result = $conn->query($feedback);
     $r = "";
     if ($result->num_rows > 0) {
@@ -38,16 +38,20 @@ if ($conn->connect_error) {
             $id = $row["feedback_R_Id"];
             $issued_For = $row["issued_For"];
             $date = date("Y-m-d");
+            $check = "SELECT `feedback_id`, `feedbacker_id` FROM `feedback` WHERE feedbacker_id=$student_Id and feedback_id=$id";
+            $rCheck = $conn->query($check);
             if ($date >= $issue_date & $date <= $closing_date) {
-                $check = "SELECT `feedback_id`, `feedbacker_id` FROM `feedback` WHERE feedbacker_id=$student_Id and feedback_id=$id";
-                $rCheck = $conn->query($check);
                 if ($result->num_rows > 0) {
                     $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
                 } else {
                     $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
                 }
             } else {
-                $b = '<button type="button" class="btn btn-primary" disabled>Unavailable</button';
+                if ($result->num_rows > 0) {
+                    $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
+                } else {
+                    $b = '<button type="button" class="btn btn-primary" disabled>Unavailable</button';
+                }
             }
             $r = $r . '<tr>
                 <td>' . $id . '</td>

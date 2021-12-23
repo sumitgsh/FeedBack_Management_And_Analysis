@@ -19,17 +19,16 @@ if ($conn->connect_error) {
 				setcookie('password', $password, $hour);
 			}
 		}
-	
+
 		//Check whether email exist in the database along with verified or not
 		$query = "SELECT * FROM student WHERE email = '$email'";
 		$result = mysqli_query($conn, $query);
 
-		if (mysqli_num_rows($result) == 1) {
+		if (mysqli_num_rows($result) > 0) {
 			while ($row = $result->fetch_assoc()) {
 				$row['verified'];
 				//check whether email is verified
-				if($row['verified']==false)
-				{
+				if ($row['verified'] == false) {
 					echo '<script type="text/javascript">';
 					echo 'alert("Your Email is not Verified !! Please verify");';
 					echo 'window.location.href = "login.php";';
@@ -151,53 +150,53 @@ if ($conn->connect_error) {
                     <input type="text" placeholder="Name" name="name" required>
                     <input type="email" placeholder="email@tezu.ernet.in" id="email" name="email" required>
                     <input type="password" placeholder="Password" name="password" required>
-					<label class="remember" for="terms">
-						<input type="checkbox" id="terms" required /><span>I accept terms</span>
-					</label>
-					<span class="clearfix"></span>
-					<button type="submit" name="submit">Submit</button>
-				</form>
-			</div>
-		</div>
-	</div>
+                    <label class="remember" for="terms">
+                        <input type="checkbox" id="terms" required /><span>I accept terms</span>
+                    </label>
+                    <span class="clearfix"></span>
+                    <button type="submit" name="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-	<script src="assets/js/index.js"></script>
-	<script src="./assets/js/login_style.js"></script>
-	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-	<script type="text/javascript">
-		$('#rollNo').change(function() {
-			$.ajax({
-				url: "checkRoll.php",
-				data: {
-					roll_No: $('#rollNo').val()
-				},
-				type: "GET",
-				context: document.body,
-				success: function(result) {
-					if ($.trim(result) == "1") {
-						alert("Record for this roll No already exists");
-					}
-				}
-			});
-		});
+    <script src="assets/js/index.js"></script>
+    <script src="./assets/js/login_style.js"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script type="text/javascript">
+    $('#rollNo').change(function() {
+        $.ajax({
+            url: "checkRoll.php",
+            data: {
+                roll_No: $('#rollNo').val()
+            },
+            type: "GET",
+            context: document.body,
+            success: function(result) {
+                if ($.trim(result) == "1") {
+                    alert("Record for this roll No already exists");
+                }
+            }
+        });
+    });
 
-		$('#email').change(function() {
-			$.ajax({
-				url: "checkEmail.php",
-				data: {
-					email: $('#email').val()
-				},
-				type: "GET",
-				context: document.body,
-				success: function(result) {
-					if ($.trim(result) == "1") {
-						alert("Record for this email already exists");
-					}
-				}
-			});
-		});
-	</script>
-                   
+    $('#email').change(function() {
+        $.ajax({
+            url: "checkEmail.php",
+            data: {
+                email: $('#email').val()
+            },
+            type: "GET",
+            context: document.body,
+            success: function(result) {
+                if ($.trim(result) == "1") {
+                    alert("Record for this email already exists");
+                }
+            }
+        });
+    });
+    </script>
+
 
 
 
