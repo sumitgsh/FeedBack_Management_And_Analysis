@@ -1,10 +1,7 @@
 <?php
 
 include '../includes/conn.php';
-session_start();
-
-$department_Id = 'cse';
-$teacher_Id = 'CSE_01';
+include './check.php';
 $r = '';
 // Show the Selected Students in the Dashboard after selecting based on student_ID
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,50 +21,111 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $result = $conn->query($filter);
             $color = array('Aqua', 'BlueViolet', 'Chocolate', 'CornflowerBlue', 'Cyan', 'DarkMagenta', 'DeepPink');
-            $r = "<canvas id='myChart'></canvas>
-            <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js'></script>
-            <script>
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-            type: '" . $chart_Type . "',
-            data: {
-            labels:['Question'";
-            $i = 0;
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $qId[$i] = $row['question_Id'];
-                    $q[$i] = $row['question'];
-                    $ans[$i] = $row['ans'];
-                    $i = $i + 1;
-                }
-            }
-
-            $r = $r .
-                "],datasets: [";
-            for ($j = 0; $j < sizeof($ans); $j++) {
-                $red = 10 + $j * 5;
-                $blue = 9 + $j * 5;
-                $green = 32 + $j * 3;
-                $r = $r . "{
-                    data:[" . $ans[$j] . "],
-                    label: '" . $q[$j] . "',
-                    borderColor:'" . $color[$j] . "',
-                    backgroundColor:'" . $color[$j] . "',
-                },";
-            }
-            $r = $r . "],
-            },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                            beginAtZero:true,
-                            max: 5
-                            }
-                        }]
+            if ($chart_Type == 'bar') {
+                $r = "<canvas id='myChart'></canvas>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js'></script>
+                <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                type: '" . $chart_Type . "',
+                data: {
+                labels:['Question'";
+                $i = 0;
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $qId[$i] = $row['question_Id'];
+                        $q[$i] = $row['question'];
+                        $ans[$i] = $row['ans'];
+                        $i = $i + 1;
                     }
                 }
-        }); </script>";
+
+                $r = $r .
+                    "],datasets: [";
+                for ($j = 0; $j < sizeof($ans); $j++) {
+                    $red = 10 + $j * 5;
+                    $blue = 9 + $j * 5;
+                    $green = 32 + $j * 3;
+                    $r = $r . "{
+                        data:[" . $ans[$j] . "],
+                        label: '" . $q[$j] . "',
+                        borderColor:'" . $color[$j] . "',
+                        backgroundColor:'" . $color[$j] . "',
+                    },";
+                }
+                $r = $r . "],
+                },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                beginAtZero:true,
+                                max: 5
+                                }
+                            }]
+                        }
+                    }
+                }); </script>";
+            } else if ($chart_Type == 'line') {
+                $r = "<canvas id='myChart'></canvas>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js'></script>
+                <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                type: '" . $chart_Type . "',
+                data: {
+                ";
+                $i = 0;
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $qId[$i] = $row['question_Id'];
+                        $q[$i] = $row['question'];
+                        $ans[$i] = $row['ans'];
+                        $i = $i + 1;
+                    }
+                }
+                $r = $r .
+                    "labels: [";
+                for ($j = 1; $j <= sizeof($ans); $j++) {
+                    $r = $r . "'" . $j . "',";
+                };
+                $r = $r .
+                    "],datasets: [
+                        {
+                        data:[";
+                for ($j = 0; $j < sizeof($ans); $j++) {
+                    $r = $r .  $ans[$j] . ",";
+                }
+
+                $r = $r . "],
+                borderColor: [";
+                for ($j = 0; $j < sizeof($ans); $j++) {
+                    $r = $r . "'" . $color[$j] . "',";
+                }
+                $r = $r . "],
+                backgroundColor: [";
+                for ($j = 0; $j < sizeof($ans); $j++) {
+                    $r = $r . "'" . $color[$j] . "',";
+                }
+                $r = $r . "],
+                }]},
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                beginAtZero:true,
+                                max: 5,
+                                min:0
+                                }
+                            }]
+                        }
+                    }
+                }); </script>";
+                for ($j = 0; $j < sizeof($ans); $j++) {
+                    $i = $j + 1;
+                    $r = $r . $i . " " . $q[$j] . "<br>";
+                };
+            }
         } else if ($type == 'long') {
         }
     }
@@ -80,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Analyse|Teacher Dashboard</title>
+    <title>Analyse | Teacher Dashboard</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Raleway&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -127,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-12">
-                            <h1>Selected Students</h1>
+                            <h1>Analyse</h1>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
@@ -145,7 +203,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <option selected value="all">All</option>
                                         <?php
 
-                                        $id = "SELECT `feedback_R_Id`, `status` FROM `feedback_receiveables` WHERE `issued_By`='$teacher_Id' and  `issuer_Domain`=2";
+                                        $id = "SELECT `feedback_R_Id`, `status` FROM `feedback_receiveables` WHERE `issued_By`='$teacher_Id'";
                                         $result = $conn->query($id);
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
