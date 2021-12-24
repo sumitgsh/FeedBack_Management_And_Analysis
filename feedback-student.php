@@ -36,8 +36,7 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
 <?php
-session_start();
-$feedbacker_id = 8;
+include './check.php';
 
 include './includes/conn.php';
 if ($conn->connect_error) {

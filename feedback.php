@@ -62,7 +62,7 @@ if ($conn->connect_error) {
                 if ($rCheck->num_rows > 0) {
                     $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
                 } else {
-                    $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
+                    $b = '<a class="btn btn-primary" href="feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
                 }
             } else {
                 if ($rCheck->num_rows > 0) {
