@@ -51,7 +51,7 @@ if ($conn->connect_error) {
                     $_SESSION['relation'] = $row['relation'];
                     $_SESSION['success'] = "You are now logged in";
 
-                    header('location:index.php');
+                    header('location:dashboard.php');
                 } else {
                     //Password did not matched with the hashed One
                     echo '<script type="text/javascript">';
