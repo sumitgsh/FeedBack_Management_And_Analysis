@@ -1,3 +1,4 @@
+-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback List</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <!-- Datatable plugin CSS file -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
 
@@ -37,11 +39,12 @@
 
 <?php
 include './includes/conn.php';
-include './check.php';
+//include './check.php';
+$student_Id = 8;
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-    $feedback = "SELECT DISTINCT department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
+    $feedback = "SELECT  department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
                 issue_date,closing_date,feedback_receiveables.status,teacher.name as tName,feedback_receiveables.feedback_R_Id, feedback_receiveables.issued_For FROM`coursetaken`,`coursetaught`,`program`,`department`,
                 `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND coursetaken.course_Taught_Id=coursetaught.course_Taught_Id AND
                  coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id AND coursetaken.student_Id=$student_Id AND feedback_receiveables.issued_For='student'
@@ -63,13 +66,13 @@ if ($conn->connect_error) {
             $check = "SELECT `feedback_id`, `feedbacker_id` FROM `feedback` WHERE feedbacker_id=$student_Id and feedback_id=$id";
             $rCheck = $conn->query($check);
             if ($date >= $issue_date & $date <= $closing_date) {
-                if ($rCheck->num_rows > 0) {
+                if ($result->num_rows > 0) {
                     $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
                 } else {
                     $b = '<a class="btn btn-primary" href="feedback-student.php?id=' . $id . '&issued_For=' . $issued_For . '">Provide Feedback</a></td>';
                 }
             } else {
-                if ($rCheck->num_rows > 0) {
+                if ($result->num_rows > 0) {
                     $b = '<a class="btn btn-info" href="#">Feedback Submited</a></td>';
                 } else {
                     $b = '<button type="button" class="btn btn-primary" disabled>Unavailable</button';
@@ -142,11 +145,14 @@ if ($conn->connect_error) {
                 </div>
             </section>
         </div>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
         </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
         </script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
         </script>
 
         <!-- jQuery library file -->
@@ -157,25 +163,26 @@ if ($conn->connect_error) {
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
         </script>
 
-        <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
+        <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
         </script>
         <script>
-            /* Initialization of datatable */
-            $(document).ready(function() {
-                $('#tableID').DataTable({});
-            });
+        /* Initialization of datatable */
+        $(document).ready(function() {
+            $('#tableID').DataTable({});
+        });
         </script>
         <script>
-            $("button").on("click", function() {
-                var cid = $(this).data('cid');
-                var teacher_Id = $(this).data('teacher');
-                var name = $(this).data('name');
-                var department_Id = $(this).data('department_id');
-                var departemnt_Name = $(this).data('departemnt_name');
-                var session = $(this).data('session');
-                var year = $(this).data('year');
-                var course_Code = $(this).data('course_code');
-            });
+        $("button").on("click", function() {
+            var cid = $(this).data('cid');
+            var teacher_Id = $(this).data('teacher');
+            var name = $(this).data('name');
+            var department_Id = $(this).data('department_id');
+            var departemnt_Name = $(this).data('departemnt_name');
+            var session = $(this).data('session');
+            var year = $(this).data('year');
+            var course_Code = $(this).data('course_code');
+        });
         </script>
 
         <!-- Footer -->
@@ -190,7 +197,7 @@ if ($conn->connect_error) {
     <script src="./teacher/plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-        $.widget.bridge('uibutton', $.ui.button)
+    $.widget.bridge('uibutton', $.ui.button)
     </script>
 
 

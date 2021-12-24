@@ -39,7 +39,7 @@ include './check.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
-    $feedback = "SELECT department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
+    $feedback = "SELECT DISTINCT department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
                 issue_date,closing_date,feedback_receiveables.status, feedback_receiveables.feedback_R_Id, feedback_receiveables.issued_For FROM`coursetaken`,`coursetaught`,`program`,`department`,
                 `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND coursetaken.course_Taught_Id=coursetaught.course_Taught_Id AND
                  coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id  AND  feedback_receiveables.issued_By='$teacher_Id' ORDER BY closing_date DESC";
@@ -57,7 +57,7 @@ if ($conn->connect_error) {
             $issued_For = $row["issued_For"];
             $date = date("Y-m-d");
 
-            $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher/issue-feedback?course_Taught=' . $course_Code . '">Edit</a></td>';
+            $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher/issue-feedback?course_Taught_Id=' . $course_Taught_Id . '">Edit</a></td>';
 
             $r = $r . '<tr>
                 <td>' . $id . '</td>
