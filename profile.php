@@ -160,8 +160,6 @@ if ($result->num_rows > 0) {
                                                 $programid = "SELECT `program_Id`, `program_Name` FROM `program` WHERE department_Id='$department_Id'";
                                                 $result = $conn->query($programid);
                                                 $pid = "";
-                                                echo $department_Id . "ji";
-                                                echo "hello:";
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
                                                         if ($program_Id == $row["program_Id"])
