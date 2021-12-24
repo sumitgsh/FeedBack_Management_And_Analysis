@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Question</title>
+    <title>Question | Admin</title>
 
     <!-- Google Font: Open Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
 
@@ -37,6 +37,7 @@
 
 
 <?php
+include "./check.php";
 include '../includes/conn.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -48,7 +49,12 @@ if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
             if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
-                echo "error";
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Select At least one category </strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
                 die();
             } else {
                 $question_Id = $_POST["question_Id"];
@@ -89,8 +95,8 @@ if ($conn->connect_error) {
                     }
                 } catch (Exception $e) {
                     //throw $th;
-                    echo $e;
-                    echo "exp";
+                    // echo $e;
+                    //echo "exp";
                 }
             }
         }

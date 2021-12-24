@@ -38,27 +38,27 @@ $mail->Body    = 'TU Feedback Employer<br>
 $mail->AltBody = '';
 // $mail->send();
 if (!$mail->send()) {
-    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+  echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
                 <strong>Error </strong> 
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>';
 } else {
-    if ($conn->query($sql) === TRUE) {
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+  if ($conn->query($sql) === TRUE) {
+    echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
                 <strong>Employer Added </strong> 
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>';
-    } else {
-        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+  } else {
+    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
                 <strong>Error </strong> 
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>';
-        echo $conn->error;
-    }
+    // echo $conn->error;
+  }
 }

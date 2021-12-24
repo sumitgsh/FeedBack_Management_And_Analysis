@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add Department | Admin </title>
-
+    <title>Change Password| Student</title>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -14,51 +13,51 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
-
 <?php
 include "./check.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  include '../includes/conn.php';
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  } else {
-    $department_Id = strtolower($_POST["department_Id"]);
-    $department_Name = ucwords(strtolower($_POST["department_Name"]));
-    try {
-      $sql = "INSERT INTO `department`(`department_Id`, `name`) VALUES ('$department_Id','$department_Name')";
-      if ($conn->query($sql) === TRUE) {
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
-                <strong>Department </strong> Successfully Added !!
+    include './includes/conn.php';
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } else {
+        $confirmPassword = $_POST['confirm_password'];
+        $password = $_POST['password'];
+        if (strcmp($confirmPassword, $password) == 0) {
+            $p = password_hash($password, PASSWORD_DEFAULT);
+            $update = "UPDATE `student` SET `password`='$p' WHERE student_Id='$student_Id'";
+            if ($conn->query($update) === TRUE) {
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Password </strong> Successfully Added !!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>';
-      } else {
-        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
-                <strong>Department Id Already Exist!!</strong> 
+            } else {
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Password  </strong> Update Fail !!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>';
-      }
-    } catch (Exception $e) {
-      //throw $th;
-      echo $e;
-      echo "exp";
+                echo $conn->error;
+            }
+        } else {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Password  </strong> doesnot Match!!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
+        }
     }
-  }
 }
 ?>
-
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Navbar -->
         <?php include './main-nav.php' ?>
         <!-- Navbar -->
-
-        <!-- /.navbar -->
-        <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
         <?php include './main-sidebar.php' ?>
@@ -72,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Teacher</h1>
+                            <h1>Change Password</h1>
                         </div>
 
                     </div>
@@ -87,18 +86,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="card card-primary">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        Add Department
+                                        Create new password
                                     </div>
                                 </div>
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="department_Id">Department Id</label><br>
-                                            <input type="text" class="form-control" name="department_Id" required>
+                                            <label for="password">Password ?</label><br>
+                                            <input type="password" id="password" class="form-control" name="password"
+                                                required></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="department_Name">Department Name</label>
-                                            <input type="text" class="form-control" name="department_Name" required>
+                                            <label for="confirm_password">Confirm new password</label><br>
+                                            <input type="password" id="confirm_password" class="form-control"
+                                                name="confirm_password" required></input>
                                         </div>
                                         <div class="card-footer">
                                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -134,13 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script>
-    // Dismiss the alert after 4 Sec
-    setTimeout(
-        function() {
-            $(".alert").alert('close')
-        }, 2000)
-
-
     $(function() {
         bsCustomFileInput.init();
     });

@@ -17,32 +17,48 @@
 
 
 <?php
+include "./check.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  include '../includes/conn.php';
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  } else {
-    if (empty($_POST['teacher_Id']) || empty($_POST['name']) || empty($_POST['email']) || empty($_POST['department']) || empty($_POST['role'])) {
-      echo "error";
-      die();
+    include '../includes/conn.php';
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     } else {
-      $teacher_Id = $_POST['teacher_Id'];
-      $name = $_POST['name'];
-      $email = $_POST['email'];
-      $department_Id = $_POST['department'];
-      $role = $_POST['role'];
-      $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      $tpass = substr(str_shuffle($chars), 0, 8);
-      $password = password_hash($tpass, PASSWORD_DEFAULT);
-      $sql = "INSERT INTO `teacher`(`teacher_Id`, `name`, `email`, `department_Id`, `role`, `password`) VALUES ('$teacher_Id','$name','$email','$department_Id','$role','$password')";
-      if ($conn->query($sql) === TRUE) {
-        echo "teacher added";
-        include "./send-teacher-mail.php";
-      } else {
-        echo $conn->error;
-      }
+        if (empty($_POST['teacher_Id']) || empty($_POST['name']) || empty($_POST['email']) || empty($_POST['department']) || empty($_POST['role'])) {
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Empty </strong> Field !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
+        } else {
+            $teacher_Id = $_POST['teacher_Id'];
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $department_Id = $_POST['department'];
+            $role = $_POST['role'];
+            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $tpass = substr(str_shuffle($chars), 0, 8);
+            $password = password_hash($tpass, PASSWORD_DEFAULT);
+            $sql = "INSERT INTO `teacher`(`teacher_Id`, `name`, `email`, `department_Id`, `role`, `password`) VALUES ('$teacher_Id','$name','$email','$department_Id','$role','$password')";
+            if ($conn->query($sql) === TRUE) {
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Teacher </strong> Successfully Added !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
+                include "./send-teacher-mail.php";
+            } else {
+                //echo $conn->error;
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Try </strong> Again !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
+            }
+        }
     }
-  }
 }
 ?>
 
@@ -105,19 +121,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 data-dropdown-css-class="select2-danger" style="width: 100%;"
                                                 name="department" id="department" required>
                                                 <?php
-                        include '../includes/conn.php';
-                        if ($conn->connect_error) {
-                          die("Connection failed: " . $conn->connect_error);
-                        } else {
-                          $sql = "SELECT `department_Id`, `name` FROM `department`";
-                          $result = $conn->query($sql);
-                          if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                              echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
-                            }
-                          }
-                        }
-                        ?>
+                                                include '../includes/conn.php';
+                                                if ($conn->connect_error) {
+                                                    die("Connection failed: " . $conn->connect_error);
+                                                } else {
+                                                    $sql = "SELECT `department_Id`, `name` FROM `department`";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            echo '<option value="' . $row["department_Id"] . '">' . $row["name"] . '</option>';
+                                                        }
+                                                    }
+                                                }
+                                                ?>
                                             </select>
                                         </div>
 

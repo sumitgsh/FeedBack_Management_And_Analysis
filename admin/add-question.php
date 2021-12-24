@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FeedBack Management| Admin Dashboard</title>
+    <title>Add Question | Admin </title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -15,14 +15,19 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
 <?php
+include "./check.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../includes/conn.php';
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     } else {
         if (empty($_POST["question"]) || (empty($_POST["alumni"]) && empty($_POST["employer"]) && empty($_POST["parent"]) && empty($_POST["student"]) && empty($_POST["teacher"]))) {
-            echo "error";
-            die();
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Check </strong> At least one category !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
         } else {
             $question = $_POST["question"];
             $question_Type = $_POST["question_Type"];
@@ -41,14 +46,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (!empty($value)) {
                         $sql = "INSERT INTO `questioncategory`(`category_Id`, `question_Id`) VALUES ('$value','$id')";
                         $conn->query($sql);
-                        echo $conn->error;
+                        //echo $conn->error;
                     }
                 }
-                echo "Qustion Added";
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Question Added </strong>  !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
             } catch (Exception $e) {
                 //throw $th;
-                echo $e;
-                echo "exp";
+                //echo $e;
+                // echo "exp";
             }
         }
     }

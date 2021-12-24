@@ -40,5 +40,5 @@ $mail->AltBody = '';
 if (!$mail->send()) {
     echo "<div class='container' style='text-align:center;'><h2>Message could not be able to sent .<br>Try Again Later</div>";
 } else {
-    $message = "success";
+    $message = "Success Email send";
 }
