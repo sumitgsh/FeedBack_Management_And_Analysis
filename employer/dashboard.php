@@ -10,7 +10,7 @@ include "./check.php"
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FeedBack Management|Employer Dashboard</title>
+    <title>FeedBack Management | Employer Dashboard</title>
 
     <!-- Google Font: Open Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
