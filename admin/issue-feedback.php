@@ -19,6 +19,7 @@
 
 
 <?php
+include "./check.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../includes/conn.php';
     if ($conn->connect_error) {

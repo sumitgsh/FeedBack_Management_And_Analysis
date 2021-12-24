@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Employer | Super Admin</title>
+    <title>Add Employer | Admin </title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -17,6 +17,7 @@
 
 
 <?php
+include "./check.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../includes/conn.php';
     if ($conn->connect_error) {
