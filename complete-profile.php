@@ -90,9 +90,7 @@ if (isset($_POST['complete_profile'])) {
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-8">
-                            <h1>Complete Profile</h1>
-                        </div>
+                       
                         <?php
                             if(isset($_POST['complete_profile']))
                             {
@@ -110,7 +108,7 @@ if (isset($_POST['complete_profile'])) {
                             <div class="card card-primary">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        Student Profile
+                                        Complete Profile
                                     </div>
                                 </div>
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
