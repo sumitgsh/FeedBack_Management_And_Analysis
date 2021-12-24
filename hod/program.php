@@ -16,7 +16,7 @@
 </head>
 
 <?php
-$department_Id = 'cse';
+include "./check.php";
 include '../includes/conn.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -24,8 +24,12 @@ if ($conn->connect_error) {
     $message = "";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["name"]) || (empty($_POST["program_Id"]))) {
-            echo "error";
-            die();
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Empty Field </strong> !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
         } else {
             $name = $_POST["name"];
             $program_Id = $_POST["program_Id"];

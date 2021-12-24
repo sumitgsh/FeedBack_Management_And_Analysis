@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $department_Id = 'cse' ?>
 
 <head>
     <meta charset="UTF-8">
@@ -18,6 +17,7 @@
 
 <?php
 include '../includes/conn.php';
+include "./check.php";
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
@@ -30,9 +30,19 @@ if ($conn->connect_error) {
         $year = $_POST['year'];
         $sql = "UPDATE `coursetaught` SET `teacher_Id`='$teacher_Id',`course_Code`=' $course_Code',`session`='$ses',`year`=$year WHERE `course_Taught_Id`=$cid";
         if ($conn->query($sql) === TRUE) {
-            echo "course taught updated";
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Course </strong> Taught Updated !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
         } else {
-            echo $conn->error;
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Course </strong> Taught Update Fail !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
         }
     }
     $course_Taught = "SELECT `course_Taught_Id`, `teacher_Id`, `course_Code`, `session`, `year` FROM `coursetaught` WHERE 1";

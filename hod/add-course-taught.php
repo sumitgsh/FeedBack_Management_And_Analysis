@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $department_Id = 'cse' ?>
 
 <head>
     <meta charset="UTF-8">
@@ -11,6 +10,7 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 </head>
 <?php
+include "./check.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../includes/conn.php';
     if ($conn->connect_error) {
@@ -23,14 +23,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         try {
             $sql = "INSERT INTO `coursetaught`(`teacher_Id`, `course_Code`, `session`, `year`) VALUES ('$teacher_Id','$course_Code','$ses',$year)";
             if ($conn->query($sql) === TRUE) {
-                echo "Course Taught Added";
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Course </strong> Taught Added !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
             } else {
-                echo $conn->error;
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
+                <strong>Failed </strong>To Add Course Taught !!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>';
             }
         } catch (Exception $e) {
             //throw $th;
-            echo $e;
-            echo "exp";
+            // echo $e;
+            //echo "exp";
         }
     }
 }
