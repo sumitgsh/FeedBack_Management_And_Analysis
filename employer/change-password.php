@@ -4,29 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Change Password| Teacher</title>
+    <title>Change Password| Employer</title>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./teacher/plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="./teacher/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="./teacher/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="./teacher/plugins/jqvmap/jqvmap.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="./teacher/dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="./teacher/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="./teacher/plugins/daterangepicker/daterangepicker.css">
-    <!-- jQuery library file -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js">
-    </script>
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
 <?php
 include "./check.php";
@@ -39,10 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $_POST['password'];
         if (strcmp($confirmPassword, $password) == 0) {
             $p = password_hash($password, PASSWORD_DEFAULT);
-            $update = "UPDATE `student` SET `password`='$p' WHERE student_Id='$student_Id'";
+            $update = "UPDATE `employers` SET `password`='$p' WHERE employers_Id='$employers_Id'";
             if ($conn->query($update) === TRUE) {
                 echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
-                <strong>Password </strong> Successfully Updated !!
+                <strong>Password </strong> Successfully Added !!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -138,32 +123,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <!-- ./wrapper -->
 
-     <!-- Bootstrap 4 -->
-     <script src="./teacher/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="./teacher/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="./teacher/plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="./teacher/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="./teacher/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="./teacher/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="./teacher/plugins/moment/moment.min.js"></script>
-    <script src="./teacher/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="./teacher/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="./teacher/plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="./teacher/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="./teacher/dist/js/adminlte.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="./teacher/dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="./teacher/dist/js/pages/dashboard.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
     $(function() {
         bsCustomFileInput.init();
     });
