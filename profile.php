@@ -36,6 +36,8 @@
 <?php
 include './includes/conn.php';
 include "./check.php";
+include "./complete-check.php";
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

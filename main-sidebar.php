@@ -16,7 +16,7 @@ include './includes/conn.php';
         <img src="./teacher/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <!-- <a href="#" class="d-block"><?php echo $_SESSION['name'] ?></a> -->
+        <a href="#" class="d-block"><?php echo $_SESSION['name'] ?></a>
       </div>
     </div>
 
@@ -58,6 +58,14 @@ include './includes/conn.php';
           </a>
 
         </li>
+
+        <li class="nav-item">
+          <a href="change-password.php" class="nav-link">
+            <i class="fa fa-key" aria-hidden="true"></i>
+            <p>Change Password</p>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a href="logout.php" class="nav-link">
             <i class="fas fa-sign-out-alt"></i>

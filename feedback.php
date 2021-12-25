@@ -34,7 +34,7 @@
 
 <?php
 include './includes/conn.php';
-//include './check.php';
+include "./complete-check.php";
 $student_Id = 8;
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
