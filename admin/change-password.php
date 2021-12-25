@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confirmPassword = $_POST['confirm_password'];
         $password = $_POST['password'];
         if (strcmp($confirmPassword, $password) == 0) {
-            $update = "UPDATE `super_admin` SET `password`='$password' WHERE email='$email'";
+            $update = "UPDATE `super_admin` SET `pass`='$password' WHERE email='$email'";
             if ($conn->query($update) === TRUE) {
                 echo '<div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom:0;border-radius:0;">
                 <strong>Password </strong> Successfully Added !!
