@@ -28,6 +28,7 @@
                             <a class="dropdown-item" href="./employer/login.php">Employer</a>
                             <a class="dropdown-item" href="./alumni/index.php">Alumni</a>
                             <a class="dropdown-item" href="./parent/index.php">Parent</a>
+                            <a class="dropdown-item" href="./hod/index.php">HOD</a>
                         </div>
                     </div>
                     <div class="dropdown show p-1">

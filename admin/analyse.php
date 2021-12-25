@@ -2,7 +2,7 @@
 
 include '../includes/conn.php';
 include './check.php';
-
+include './analyse-sentiment.php';
 $r = '';
 // Show the Selected Students in the Dashboard after selecting based on student_ID
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,6 +66,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
         }); </script>";
         } else if ($type == 'long') {
+
+            if ($id == 'all') {
+                $filter = "SELECT q.question_Id, `question`, `question_Type`,`answer` FROM `question`as q,`feedback_receiveables` as fr,`feedback` as f 
+                WHERE question_Type='long' and f.feedback_id=fr.feedback_R_Id and q.question_Id=f.question_Id";
+            } else {
+                $filter = "SELECT q.question_Id, `question`, `question_Type`,AVG(answer) as ans FROM `question`as q,`feedback_receiveables` as fr,`feedback` as f 
+                WHERE question_Type='$type' and f.feedback_id=$id and q.question_Id=f.question_Id";
+            }
+
+
+            $result = $conn->query($filter);
+
+            $r = '<table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Question Name</th>
+                                <th scope="col">Answer</th>
+                                <th scope="col">Sentiment</th>
+                            </tr>
+                        </thead><tbody>';
+            
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+
+                    $sentiment = '';
+                    //Find the largest value of the sentiment..
+                    if (!is_null($row['answer'])) {
+                        $answer = $row['answer'];
+                        $senti_val = textToSentient($answer);
+                        $neg = $senti_val['neg'] * 100;
+                        $neu = $senti_val['neu'] * 100;
+                        $pos = $senti_val['pos'] * 100;
+                        if ($neg > $neu and $neg > $pos) {
+
+                            $sentiment = $sentiment . '<span style="font-size:50px;">&#128524;</span>';
+                        } else if ($neu > $neg and $neu > $pos) {
+                            $sentiment = $sentiment . '<span style="font-size:50px;">&#128528;</span>';
+                        } else {
+                            $sentiment = $sentiment . '<span style="font-size:50px;">&#128522;</span>';
+                        }
+                    }
+                    $r = $r . '<tr>
+                        <td>' . $row['question_Id'] . '</td>
+                        <td>' . $row['question'] . '</td>
+                        <td>' . $row['answer'] . '</td>
+                        <td>' . $sentiment . '</td>
+                        <td>
+                    </tr>';
+                
+                }
+            }
+            $r = $r . '</tbody></table>';
         }
     }
 }
@@ -124,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-12">
-                            <h1>Selected Students</h1>
+                            <h1>Analyse Feedback</h1>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
@@ -137,8 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="col-md-2">
                                 <div class="filter_field">
                                     <label>Feedback Id: </label>
-                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
-                                        aria-label=".form-select-lg example" name="id">
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="id">
                                         <option selected value="all">All</option>
                                         <?php
 
@@ -157,8 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="col-md-2">
                                 <div class="filter_field">
                                     <label>Feedback Type: </label>
-                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
-                                        aria-label=".form-select-lg example" name="feedback_Type">
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="feedback_Type">
                                         <option selected value="rating">Rating</option>
                                         <option value="long">Long</option>
                                     </select>
@@ -173,7 +224,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                 </form>
                 <div> <?php echo $r; ?></div>
-
         </div><!-- /.container-fluid -->
         </section>
 
@@ -187,57 +237,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- ./wrapper -->
 
 
-
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
-
-    <!-- jQuery library file -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js">
-    </script>
-
-    <!-- Datatable plugin JS library file -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
-    </script>
-
-    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
-    </script>
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
+        // Dismiss the alert after 4 Sec
+        setTimeout(
+            function() {
+                $(".alert").alert('close')
+            }, 2000)
 
 
-    <!-- Datatable plugin JS library file -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+        $(function() {
+            bsCustomFileInput.init();
+        });
     </script>
 
     <!-- Page specific script -->
     <script>
-    /* Initialization of datatable */
-    $(document).ready(function() {
-        $('#tableID').DataTable({});
-    });
+        /* Initialization of datatable */
+        $(document).ready(function() {
+            $('#tableID').DataTable({});
+        });
     </script>
     <script>
-    $("button").on("click", function() {
-        var id = $(this).data('id');
-        var question = $(this).data('question');
-        var question_Type = $(this).data('qt');
-        var alumni = $(this).data('alumni');
-        var employer = $(this).data('employer');
-        var student = $(this).data('student');
-        var parent = $(this).data('parent');
-        var teacher = $(this).data('teacher');
-        console.log(alumni, employer, student, parent, teacher);
-        $('#question_Id').val(id);
-        $('#question').val(question);
-        $('#question_Type').val(question_Type);
-    });
+        $("button").on("click", function() {
+            var id = $(this).data('id');
+            var question = $(this).data('question');
+            var question_Type = $(this).data('qt');
+            var alumni = $(this).data('alumni');
+            var employer = $(this).data('employer');
+            var student = $(this).data('student');
+            var parent = $(this).data('parent');
+            var teacher = $(this).data('teacher');
+            console.log(alumni, employer, student, parent, teacher);
+            $('#question_Id').val(id);
+            $('#question').val(question);
+            $('#question_Type').val(question_Type);
+        });
     </script>
 </body>
 

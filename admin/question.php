@@ -308,7 +308,7 @@ if ($conn->connect_error) {
                                     class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger"
                                     style="width: 100%;">
                                     <option value="rating">Rating</option>
-                                    <option value="long_Answer">Long Answer</option>
+                                    <option value="long">Long Answer</option>
                                 </select><br>
                             </div>
                             <div class="form-group">
