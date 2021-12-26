@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Preview Form | Admin</title>
+    <title>Preview Form</title>
 
     <!-- Google Font: Open Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -38,14 +38,12 @@
 
 
 <?php
-error_reporting(0);
 include "./check.php";
 include '../includes/conn.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
     $message = "";
-    $feedback_type = "";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         include '../includes/conn.php';
         if ($conn->connect_error) {
@@ -55,8 +53,8 @@ if ($conn->connect_error) {
             //get feedback question
             $sql = "SELECT qc.category_Id, qc.question_Id,q.question,q.question_Type FROM `questioncategory` as qc,question q WHERE qc.question_Id=q.question_Id and qc.category_Id='" . $feedback_type . "' order by qc.question_Id,q.question_type";
             $result = $conn->query($sql);
+            $r = "<h1>" . ucwords($feedback_type) . " Feedback Form</h1>";
             if ($result->num_rows > 0) {
-                $r = "<h1>" . ucwords($feedback_type) . " Feedback Form</h1>";
                 while ($row = $result->fetch_assoc()) {
                     $r = $r . '<div class="card card-primary">
                                     <div class="card-header">
@@ -84,8 +82,6 @@ if ($conn->connect_error) {
                                     </div>';
                     }
                 }
-            } else {
-                $r = "No Data";
             }
         }
     }
@@ -166,32 +162,17 @@ if ($conn->connect_error) {
     </script>
 
 
+     <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
+    <!-- Page specific script -->
 </body>
 
 </html>
