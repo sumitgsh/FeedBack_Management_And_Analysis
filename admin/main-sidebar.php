@@ -36,12 +36,10 @@
                with font-awesome or any other icon font library -->
 
         <li class="nav-item">
-          <a href="widgets.html" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
+          <a href="change-password.php" class="nav-link">
+            <i class="fa fa-key" aria-hidden="true"></i>
             <p>
-              Widgets
-              <span class="right badge badge-danger">New</span>
-            </p>
+              Change Password</p>
           </a>
         </li>
 

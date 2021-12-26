@@ -54,6 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body class="hold-transition sidebar-mini">
 
+<div class="wrapper">
+        <!-- Navbar -->
+        <?php include './main-nav.php' ?>
+        <!-- Navbar -->
+
+        <!-- Main Sidebar Container -->
+        <?php include './main-sidebar.php' ?>
+        <!-- Sidebar -->
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -104,10 +112,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </section>
         <!-- /.content -->
     </div>
+</div>
 
-
-    <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+     <!-- jQuery -->
+     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- bs-custom-file-input -->
