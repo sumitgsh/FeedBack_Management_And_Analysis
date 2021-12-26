@@ -1,5 +1,5 @@
 <?php
-
+//error_reporting(1);
 include '../includes/conn.php';
 include './check.php';
 
@@ -58,7 +58,7 @@ $result = $conn->query($course_taken_not_empty);
 $student_detail = "";
 if (($result->num_rows) <= 0) {
 
-    $student_detail = "SELECT student_Id,roll_No,department.name,program_Name,semester FROM student,department,program where student.program_Id=program.program_Id 
+    $student_detail = "SELECT DISTINCT student_Id,roll_No,department.name,program_Name,semester FROM student,department,program where student.program_Id=program.program_Id 
                     AND program.department_Id=department.department_Id";
 } else {
 
@@ -160,15 +160,14 @@ if (isset($_POST['filter_stud'])) {
             $program_Name = $row["program_Name"];
             $semester = $row["semester"];
 
-          
+
             // Filter the Student based on Selected filter
-                $r = $r . '<tr>
+            $r = $r . '<tr>
                     <td>' . $roll_No . '</td>
                     <td>' . ucwords($department) . '</td>
                     <td>' . ucwords($program_Name) . '</td>
                     <td>' . ucwords($semester) . '</td>
                     <td><input type="checkbox" name="student_Ids[]" value="' . $student_Id . '" ></td></tr>';
-            
         }
     }
 }
@@ -263,42 +262,57 @@ if (isset($_POST['filter_stud'])) {
                             <div class="row mt-4 p-2">
                                 <div class="col-md-9"></div>
                                 <div class="col-md-1">
-                                    <button type="button" id="modify_feedback" class="btn btn-primary" class="addAttr" data-toggle="modal" data-target="#modify" data-cc="<?php echo $course_code ?>" data-cn="<?php echo $course_name ?>" data-closing_date="<?php echo $closing_date ?>">
+                                    <button type="button" id="modify_feedback" class="btn btn-primary" class="addAttr"
+                                        data-toggle="modal" data-target="#modify" data-cc="<?php echo $course_code ?>"
+                                        data-cn="<?php echo $course_name ?>"
+                                        data-closing_date="<?php echo $closing_date ?>">
                                         Modify
                                     </button></td>
 
                                     <!-- Modal -->
-                                    <div id="modify" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                    <div id="modify" class="modal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Modify Feedback Duration</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Modify Feedback
+                                                        Duration</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form method="post" action="modify-feedback.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
+                                                    <form method="post"
+                                                        action="modify-feedback.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
                                                         <div class="card-body">
                                                             <div class=" form-group">
                                                                 <label for="course_code">Course Code</label>
-                                                                <input type="text" class="form-control" name="course_code" id="course_code" readonly="readonly">
+                                                                <input type="text" class="form-control"
+                                                                    name="course_code" id="course_code"
+                                                                    readonly="readonly">
                                                             </div>
                                                             <div class=" form-group">
                                                                 <label for="course_name">Course Name</label>
-                                                                <input type="text" class="form-control" name="course_name" id="course_name" readonly="readonly">
+                                                                <input type="text" class="form-control"
+                                                                    name="course_name" id="course_name"
+                                                                    readonly="readonly">
                                                             </div>
                                                             <div class=" form-group">
                                                                 <label for="course_name">Closing Date</label>
-                                                                <input type="text" class="form-control" name="closing date" id="closing_date" readonly="readonly">
+                                                                <input type="text" class="form-control"
+                                                                    name="closing date" id="closing_date"
+                                                                    readonly="readonly">
                                                             </div>
 
                                                             <div class=" form-group">
                                                                 <label for="course_name">Update Closing Date</label><br>
-                                                                <input type="date" class="form-control" name="closing_date" id="closing_date" />
+                                                                <input type="date" class="form-control"
+                                                                    name="closing_date" id="closing_date" />
                                                             </div>
                                                             <div class="card-footer">
-                                                                <button type="submit" name="modify-feedback" class="btn btn-primary">Update</button>
+                                                                <button type="submit" name="modify-feedback"
+                                                                    class="btn btn-primary">Update</button>
                                                             </div>
                                                     </form>
                                                 </div>
@@ -308,48 +322,60 @@ if (isset($_POST['filter_stud'])) {
                                 </div>
                             </div>
                             <div class="col-md-1">
-                                <button class="btn btn-danger" id="stop_feedback" style="width: 100%;" data-course_taught_id="<?php echo $_GET['course_Taught_Id']; ?>" data-teacher_id="<?php echo $teacher_Id; ?>">
+                                <button class="btn btn-danger" id="stop_feedback" style="width: 100%;"
+                                    data-course_taught_id="<?php echo $_GET['course_Taught_Id']; ?>"
+                                    data-teacher_id="<?php echo $teacher_Id; ?>">
                                     Stop
                                 </button>
                             </div>
                             <div class="col-md-1">
-                                <button type="button" id="publish-feed" class="btn btn-success" class="addAttr" data-toggle="modal" data-target="#addModal" data-cc="<?php echo $course_code; ?>" data-cn="<?php echo $course_name; ?>">
+                                <button type="button" id="publish-feed" class="btn btn-success" class="addAttr"
+                                    data-toggle="modal" data-target="#addModal" data-cc="<?php echo $course_code; ?>"
+                                    data-cn="<?php echo $course_name; ?>">
                                     Publish
                                 </button>
                                 </td>
                                 <!-- Modal -->
-                                <div id="addModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div id="addModal" class="modal" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLongTitle">Publish</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="publish-feedback.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
+                                                <form method="post"
+                                                    action="publish-feedback.php?course_Taught_Id=<?php echo $_GET['course_Taught_Id'] ?>">
                                                     <div class="card-body">
                                                         <div class=" form-group">
 
                                                             <label for="course_code">Course Code</label>
-                                                            <input type="text" class="form-control" name="course_code" id="pub-course_code" readonly="readonly">
+                                                            <input type="text" class="form-control" name="course_code"
+                                                                id="pub-course_code" readonly="readonly">
                                                         </div>
                                                         <div class=" form-group">
                                                             <label for="course_name">Course Name</label>
-                                                            <input type="text" class="form-control" name="course_name" id="pub-course_name" readonly="readonly">
+                                                            <input type="text" class="form-control" name="course_name"
+                                                                id="pub-course_name" readonly="readonly">
                                                         </div>
 
                                                         <div class=" form-group">
                                                             <label for="starting_data">Starting Date</label><br>
-                                                            <input type="date" class="form-control" name="starting_date" id="pub-starting_date" required />
+                                                            <input type="date" class="form-control" name="starting_date"
+                                                                id="pub-starting_date" required />
                                                         </div>
                                                         <div class=" form-group">
                                                             <label for="closing_data">Closing Date</label><br>
-                                                            <input type="date" class="form-control" name="closing_date" id="pub-closing_date" />
+                                                            <input type="date" class="form-control" name="closing_date"
+                                                                id="pub-closing_date" />
                                                         </div>
                                                         <div class="card-footer">
-                                                            <button type="submit" name="publish-feedback" class="btn btn-primary">Publish</button>
+                                                            <button type="submit" name="publish-feedback"
+                                                                class="btn btn-primary">Publish</button>
                                                         </div>
                                                 </form>
                                             </div>
@@ -383,7 +409,8 @@ if (isset($_POST['filter_stud'])) {
                     <div class="col-md-3">
                         <div>
                             <label>Department: </label>
-                            <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="department_Id">
+                            <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
+                                aria-label=".form-select-lg example" name="department_Id">
                                 <option selected>All</option>
                                 <?php
                                 if ($conn->connect_error) {
@@ -405,7 +432,8 @@ if (isset($_POST['filter_stud'])) {
                         <div>
                             <label>Programme: </label>
 
-                            <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="program_Id">
+                            <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
+                                aria-label=".form-select-lg example" name="program_Id">
                                 <option selected>All</option>
                                 <?php
                                 if ($conn->connect_error) {
@@ -426,7 +454,8 @@ if (isset($_POST['filter_stud'])) {
                     <div class="col-md-2">
                         <div class="filter_field">
                             <label>Semester: </label>
-                            <select style="height:2.5rem;width:100%;" class="form-select form-select-lg" aria-label=".form-select-lg example" name="semester">
+                            <select style="height:2.5rem;width:100%;" class="form-select form-select-lg"
+                                aria-label=".form-select-lg example" name="semester">
                                 <option selected>All</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -501,11 +530,14 @@ if (isset($_POST['filter_stud'])) {
 
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
 
     <!-- jQuery library file -->
@@ -516,7 +548,8 @@ if (isset($_POST['filter_stud'])) {
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
     </script>
 
-    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
     </script>
 
 
@@ -526,27 +559,27 @@ if (isset($_POST['filter_stud'])) {
 
     <!-- Publish feedback based on Click -->
     <script>
-        $("#publish-feed").on("click", function() {
-            var cc = $(this).data('cc');
-            var cn = $(this).data('cn');
-            $('#pub-course_code').val(cc);
-            $('#pub-course_name').val(cn);
+    $("#publish-feed").on("click", function() {
+        var cc = $(this).data('cc');
+        var cn = $(this).data('cn');
+        $('#pub-course_code').val(cc);
+        $('#pub-course_name').val(cn);
 
-        });
+    });
     </script>
 
 
     <!-- Update feedback based on Click and fill the course code ansd course name -->
     <script>
-        $("#modify_feedback").on("click", function() {
-            var cc = $(this).data('cc');
-            var cn = $(this).data('cn');
-            var closing_date = $(this).data('closing_date')
+    $("#modify_feedback").on("click", function() {
+        var cc = $(this).data('cc');
+        var cn = $(this).data('cn');
+        var closing_date = $(this).data('closing_date')
 
-            $('#course_code').val(cc);
-            $('#course_name').val(cn);
-            $('#closing_date').val(closing_date)
-        });
+        $('#course_code').val(cc);
+        $('#course_name').val(cn);
+        $('#closing_date').val(closing_date)
+    });
     </script>
 
 
@@ -554,60 +587,60 @@ if (isset($_POST['filter_stud'])) {
 
     <!-- Page specific script -->
     <script>
-        /* Initialization of datatable */
-        var myTable = "";
-        $(document).ready(function() {
-            myTable = $('#all_students').DataTable({});
+    /* Initialization of datatable */
+    var myTable = "";
+    $(document).ready(function() {
+        myTable = $('#all_students').DataTable({});
+    });
+
+    $(document).ready(function() {
+        $('#Selected_Students').DataTable({});
+    });
+
+    $("#stop_feedback").on("click", function() {
+        var course_Taught_Id = $(this).data('course_taught_id');
+        var issued_By = $(this).data('teacher_id');
+
+
+        $.ajax({
+            type: "POST",
+            url: "stop-feedback.php",
+            data: {
+                'course_Taught_Id': course_Taught_Id,
+                'issued_By': issued_By
+            },
+            success: function(result) {
+                alert("Successfuly Stopped receiving feedback..");
+                // window.location.reload();
+            },
+            error: function(result) {
+                alert('error');
+            }
         });
+    });
 
-        $(document).ready(function() {
-            $('#Selected_Students').DataTable({});
+    $("#del_sel").on("click", function() {
+        var course_Taught_Id = $(this).data('course_taught_id');
+        var student_Id = $(this).data('student_id');
+
+        console.log(student_Id);
+
+        $.ajax({
+            type: "POST",
+            url: "drop_sel_stud.php",
+            data: {
+                'course_Taught_Id': course_Taught_Id,
+                'student_Id': student_Id
+            },
+            success: function(result) {
+                alert("Successfuly Deleted");
+                window.location.reload();
+            },
+            error: function(result) {
+                alert('error');
+            }
         });
-
-        $("#stop_feedback").on("click", function() {
-            var course_Taught_Id = $(this).data('course_taught_id');
-            var issued_By = $(this).data('teacher_id');
-
-
-            $.ajax({
-                type: "POST",
-                url: "stop-feedback.php",
-                data: {
-                    'course_Taught_Id': course_Taught_Id,
-                    'issued_By': issued_By
-                },
-                success: function(result) {
-                    alert("Successfuly Stopped receiving feedback..");
-                    // window.location.reload();
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-        });
-
-        $("#del_sel").on("click", function() {
-            var course_Taught_Id = $(this).data('course_taught_id');
-            var student_Id = $(this).data('student_id');
-
-            console.log(student_Id);
-
-            $.ajax({
-                type: "POST",
-                url: "drop_sel_stud.php",
-                data: {
-                    'course_Taught_Id': course_Taught_Id,
-                    'student_Id': student_Id
-                },
-                success: function(result) {
-                    alert("Successfuly Deleted");
-                    window.location.reload();
-                },
-                error: function(result) {
-                    alert('error');
-                }
-            });
-        });
+    });
     </script>
 
 </body>

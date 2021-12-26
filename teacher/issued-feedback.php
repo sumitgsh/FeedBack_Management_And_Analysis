@@ -41,8 +41,8 @@ if ($conn->connect_error) {
 } else {
     $feedback = "SELECT DISTINCT department.name as dName,course.course_Name,course.course_Code,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id,
                 issue_date,closing_date,feedback_receiveables.status, feedback_receiveables.feedback_R_Id, feedback_receiveables.issued_For FROM`coursetaken`,`coursetaught`,`program`,`department`,
-                `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND coursetaken.course_Taught_Id=coursetaught.course_Taught_Id AND
-                 coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id  AND  feedback_receiveables.issued_By='$teacher_Id' ORDER BY closing_date DESC";
+                `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND 
+                 coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id  AND feedback_receiveables.issuer_Domain=coursetaught.course_Taught_Id AND feedback_receiveables.issued_By='$teacher_Id'AND  coursetaught.teacher_Id='$teacher_Id'  ORDER BY closing_date DESC";
     $result = $conn->query($feedback);
     $r = "";
     if ($result->num_rows > 0) {
@@ -57,7 +57,7 @@ if ($conn->connect_error) {
             $issued_For = $row["issued_For"];
             $date = date("Y-m-d");
 
-            $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher/issue-feedback?course_Taught_Id=' . $course_Taught_Id . '">Edit</a></td>';
+            $b = '<a class="btn btn-primary" href="/feedback/FeedBack_Management_And_Analysis/teacher/issue-feedback.php?course_Taught_Id=' . $course_Taught_Id . '">Edit</a></td>';
 
             $r = $r . '<tr>
                 <td>' . $id . '</td>
