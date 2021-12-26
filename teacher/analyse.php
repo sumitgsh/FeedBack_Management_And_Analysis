@@ -233,7 +233,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         aria-label=".form-select-lg example" name="chart_Type">
                                         <option selected value="bar">Bar</option>
                                         <option value="line">Line</option>
-                                        <option value="polarArea">Polar Area</option>
                                     </select>
                                 </div>
                             </div>

@@ -37,7 +37,7 @@ if ($conn->connect_error) {
 					$_SESSION['role'] = $row['role'];
 					$_SESSION['success'] = "You are now logged in";
 
-					header('location:index.php');
+					header('location:analyse.php');
 				} else {
 					//Password did not matched with the hashed One
 					$message = '<div class="alert alert-danger alert-dismissible fade show" role="alert" style="width:100%";>

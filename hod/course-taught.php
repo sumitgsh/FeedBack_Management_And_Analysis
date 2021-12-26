@@ -45,7 +45,7 @@ if ($conn->connect_error) {
               </div>';
         }
     }
-    $course_Taught = "SELECT `course_Taught_Id`, `teacher_Id`, `course_Code`, `session`, `year` FROM `coursetaught` WHERE 1";
+    $course_Taught = "SELECT course_Name,course.course_Code,department.name as dn,teacher.name as tn,`session`,year  FROM `course`,teacher,department,coursetaught WHERE department.department_Id='$department_Id' AND course.course_Code=coursetaught.course_Code AND teacher.teacher_Id=coursetaught.teacher_Id";
     $result = $conn->query($course_Taught);
     $r = "";
     if ($result->num_rows > 0) {
@@ -55,28 +55,18 @@ if ($conn->connect_error) {
             $course_Code = $row["course_Code"];
             $year = $row["year"];
             $session = $row["session"];
-            $course = "SELECT `course_Name`, `course_Code`  FROM `course` WHERE `department_Id`='$department_Id'";
+            $course = "";
             $courseResult = $conn->query($course);
-            if ($courseResult->num_rows > 0) {
-                while ($rowCourse = $courseResult->fetch_assoc()) {
-                    $course_Name = $rowCourse['course_Name'];
-                    $course_Code = $rowCourse['course_Code'];
-                    $teacher = "SELECT `name`,`department_Id` FROM `teacher` WHERE `teacher_Id`='$teacher_Id' ";
-                    $teacherResult = $conn->query($teacher);
-                    if ($teacherResult->num_rows > 0) {
-                        while ($rowTeacher = $teacherResult->fetch_assoc()) {
-                            $name = $rowTeacher['name'];
-                            $department_Id = $rowTeacher['department_Id'];
-                            $dept = "SELECT `name` FROM `department` WHERE `department_Id`='$department_Id'";
-                            $dResult = $conn->query($dept);
-                            if ($dResult->num_rows > 0) {
-                                while ($row = $dResult->fetch_assoc()) {
-                                    $dept_Name = $row["name"];
-                                }
-                            }
-                        }
-                    }
-                    $r = $r . '<tr>
+            //if ($courseResult->num_rows > 0) {
+            // while ($rowCourse = $courseResult->fetch_assoc()) {
+            $course_Name = $row['course_Name'];
+            $course_Code = $row['course_Code'];
+            $name = $row['tn'];
+            $department_Id = $row['department_Id'];
+            $dept_Name = $row["dn"];
+            //}
+            //}
+            $r = $r . '<tr>
                 <td>' . $course_Name . '</td>
                 <td>' . $name . '</td>
                 <td>' . $dept_Name . '</td>
@@ -86,8 +76,6 @@ if ($conn->connect_error) {
                 data-teacher="' . $teacher_Id . '" data-course_Code="' . $course_Code . '" data-teacher-name="' . $name . '"
                  data-department_Id="' . $department_Id . '" data-department_Name="' . $dept_Name . '" data-session="' . $session . '" data-year="' . $year . '" data-cid="' . $course_Taught_Id . '"> Edit</button></td>
             </tr><br>';
-                }
-            }
         }
     }
 }
