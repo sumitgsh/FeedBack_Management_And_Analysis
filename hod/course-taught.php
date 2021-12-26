@@ -45,27 +45,21 @@ if ($conn->connect_error) {
               </div>';
         }
     }
-    $course_Taught = "SELECT course_Name,course.course_Code,department.name as dn,teacher.name as tn,`session`,year  FROM `course`,teacher,department,coursetaught WHERE department.department_Id='$department_Id' AND course.course_Code=coursetaught.course_Code AND teacher.teacher_Id=coursetaught.teacher_Id";
+    $course_Taught = "SELECT course_Name,coursetaught.course_Taught_Id as cti,course.course_Code,department.name as dn,teacher.name as tn,teacher.teacher_Id as ti,coursetaught.course_Code as cc,`session`,year  FROM `course`,teacher,department,coursetaught WHERE department.department_Id='$department_Id' AND course.course_Code=coursetaught.course_Code AND teacher.teacher_Id=coursetaught.teacher_Id";
     $result = $conn->query($course_Taught);
     $r = "";
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $course_Taught_Id  = $row["course_Taught_Id"];
-            $teacher_Id = $row["teacher_Id"];
-            $course_Code = $row["course_Code"];
+            $course_Taught_Id  = $row["cti"];
+            $teacher_Id = $row["ti"];
+            $course_Code = $row["cc"];
             $year = $row["year"];
             $session = $row["session"];
             $course = "";
-            $courseResult = $conn->query($course);
-            //if ($courseResult->num_rows > 0) {
-            // while ($rowCourse = $courseResult->fetch_assoc()) {
             $course_Name = $row['course_Name'];
             $course_Code = $row['course_Code'];
             $name = $row['tn'];
-            $department_Id = $row['department_Id'];
             $dept_Name = $row["dn"];
-            //}
-            //}
             $r = $r . '<tr>
                 <td>' . $course_Name . '</td>
                 <td>' . $name . '</td>
