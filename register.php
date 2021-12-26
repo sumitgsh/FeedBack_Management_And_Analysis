@@ -23,7 +23,17 @@ if ($conn->connect_error) {
 		}
 
 		# Email ID match..
-		if (false) {
+		//if(preg_match('/^\w+@school\.edu$/i', $source_string) > 0)
+		$allowed = [
+			'tezu.ac.in'
+		];
+		$parts = explode('@', $email);
+
+		// Remove and return the last part, which should be the domain
+		$domain = array_pop($parts);
+
+		// Check if the domain is in our list
+		if (!in_array($domain, $allowed)) {
 			echo '<script type="text/javascript">';
 			echo 'alert("Use University Email Id!!");';
 			echo 'window.location.href = "login.php";';
@@ -40,7 +50,7 @@ if ($conn->connect_error) {
 			$result = mysqli_query($conn, $query);
 
 			if ($result) {
-				
+
 				$_SESSION['name'] = $name;
 				$_SESSION['email'] = $email;
 				$_SESSION['roll_No'] = $roll_No;
