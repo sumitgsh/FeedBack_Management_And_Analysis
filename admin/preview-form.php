@@ -84,7 +84,7 @@ if ($conn->connect_error) {
                     }
                 }
             } else {
-                $r = "";
+                $r = "No Data";
             }
         }
     }
