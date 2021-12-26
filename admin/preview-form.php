@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Preview Form</title>
+    <title>Preview Form | Admin</title>
 
     <!-- Google Font: Open Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -38,12 +38,14 @@
 
 
 <?php
+error_reporting(0);
 include "./check.php";
 include '../includes/conn.php';
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } else {
     $message = "";
+    $feedback_type = "";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         include '../includes/conn.php';
         if ($conn->connect_error) {
