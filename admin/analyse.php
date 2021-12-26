@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $filter = "SELECT q.question_Id, `question`, `question_Type`,`answer` FROM `question`as q,`feedback_receiveables` as fr,`feedback` as f 
                 WHERE question_Type='long' and f.feedback_id=fr.feedback_R_Id and q.question_Id=f.question_Id";
             } else {
-                $filter = "SELECT q.question_Id, `question`, `question_Type`,AVG(answer) as ans FROM `question`as q,`feedback_receiveables` as fr,`feedback` as f 
+                $filter = "SELECT q.question_Id, `question`, `question_Type`,`answer` FROM `question`as q,`feedback_receiveables` as fr,`feedback` as f 
                 WHERE question_Type='$type' and f.feedback_id=$id and q.question_Id=f.question_Id";
             }
 
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <th scope="col">Sentiment</th>
                             </tr>
                         </thead><tbody>';
-            
+
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
 
@@ -115,7 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <td>' . $sentiment . '</td>
                         <td>
                     </tr>';
-                
                 }
             }
             $r = $r . '</tbody></table>';
@@ -130,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Analyse|Admin Dashboard</title>
+    <title>Analyse | Admin Dashboard</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Raleway&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -190,7 +189,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="col-md-2">
                                 <div class="filter_field">
                                     <label>Feedback Id: </label>
-                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="id">
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
+                                        aria-label=".form-select-lg example" name="id">
                                         <option selected value="all">All</option>
                                         <?php
 
@@ -209,7 +209,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="col-md-2">
                                 <div class="filter_field">
                                     <label>Feedback Type: </label>
-                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="feedback_Type">
+                                    <select style="height:2.5rem;width:100%;" class="form-select form-select-lg mb-3"
+                                        aria-label=".form-select-lg example" name="feedback_Type">
                                         <option selected value="rating">Rating</option>
                                         <option value="long">Long</option>
                                     </select>
@@ -249,40 +250,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script>
-        // Dismiss the alert after 4 Sec
-        setTimeout(
-            function() {
-                $(".alert").alert('close')
-            }, 2000)
+    // Dismiss the alert after 4 Sec
+    setTimeout(
+        function() {
+            $(".alert").alert('close')
+        }, 2000)
 
 
-        $(function() {
-            bsCustomFileInput.init();
-        });
+    $(function() {
+        bsCustomFileInput.init();
+    });
     </script>
 
     <!-- Page specific script -->
     <script>
-        /* Initialization of datatable */
-        $(document).ready(function() {
-            $('#tableID').DataTable({});
-        });
+    /* Initialization of datatable */
+    $(document).ready(function() {
+        $('#tableID').DataTable({});
+    });
     </script>
     <script>
-        $("button").on("click", function() {
-            var id = $(this).data('id');
-            var question = $(this).data('question');
-            var question_Type = $(this).data('qt');
-            var alumni = $(this).data('alumni');
-            var employer = $(this).data('employer');
-            var student = $(this).data('student');
-            var parent = $(this).data('parent');
-            var teacher = $(this).data('teacher');
-            console.log(alumni, employer, student, parent, teacher);
-            $('#question_Id').val(id);
-            $('#question').val(question);
-            $('#question_Type').val(question_Type);
-        });
+    $("button").on("click", function() {
+        var id = $(this).data('id');
+        var question = $(this).data('question');
+        var question_Type = $(this).data('qt');
+        var alumni = $(this).data('alumni');
+        var employer = $(this).data('employer');
+        var student = $(this).data('student');
+        var parent = $(this).data('parent');
+        var teacher = $(this).data('teacher');
+        console.log(alumni, employer, student, parent, teacher);
+        $('#question_Id').val(id);
+        $('#question').val(question);
+        $('#question_Type').val(question_Type);
+    });
     </script>
 </body>
 
