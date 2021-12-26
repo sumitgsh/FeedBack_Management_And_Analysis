@@ -122,15 +122,15 @@
             <div class="row people justify-content-center">
 
                 <div class="col-md-6 col-lg-4 item" data-aos="fade" data-aos-duration="500" data-aos-delay="500" data-aos-once="true">
-                    <div class="box"><img class="rounded-circle" src="https://i.ibb.co/wR31Lwy/2.jpg">
+                    <div class="box"><img class="rounded-circle" src="./assets/img/arunav.jpeg">
                         <h3 class="name">Arunav Chetia</h3>
                         <p class="title">Full Stack Developer</p>
                         <p class="description">A passonate developer motivated towards solving problems. </p>
-                        <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        <div class="social"><a href=""><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item" data-aos="fade" data-aos-duration="500" data-aos-delay="700" data-aos-once="true">
-                    <div class="box"><img class="rounded-circle" src="https://i.ibb.co/FbWk2xw/3.jpg">
+                    <div class="box"><img class="rounded-circle" src="./assets/img/sumit.jpeg">
                         <h3 class="name">Sumit Ghosh</h3>
                         <p class="title">Full Stack Developer</p>
                         <p class="description">AA passonate developer motivated towards solving problems.</p>
