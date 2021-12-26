@@ -38,6 +38,7 @@
 
 
 <?php
+error_reporting(0);
 include "./check.php";
 include '../includes/conn.php';
 if ($conn->connect_error) {
@@ -53,8 +54,8 @@ if ($conn->connect_error) {
             //get feedback question
             $sql = "SELECT qc.category_Id, qc.question_Id,q.question,q.question_Type FROM `questioncategory` as qc,question q WHERE qc.question_Id=q.question_Id and qc.category_Id='" . $feedback_type . "' order by qc.question_Id,q.question_type";
             $result = $conn->query($sql);
-            $r = "<h1>" . ucwords($feedback_type) . " Feedback Form</h1>";
             if ($result->num_rows > 0) {
+                $r = "<h1>" . ucwords($feedback_type) . " Feedback Form</h1>";
                 while ($row = $result->fetch_assoc()) {
                     $r = $r . '<div class="card card-primary">
                                     <div class="card-header">
@@ -82,6 +83,8 @@ if ($conn->connect_error) {
                                     </div>';
                     }
                 }
+            } else {
+                $r = "";
             }
         }
     }
@@ -162,7 +165,7 @@ if ($conn->connect_error) {
     </script>
 
 
-     <!-- jQuery -->
+    <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
