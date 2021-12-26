@@ -46,39 +46,21 @@ if ($conn->connect_error) {
 } else {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
-    
-    $course_Taught = "SELECT `course_Taught_Id`, `course_Code`, `session`, `year` FROM `coursetaught` WHERE teacher_Id='$teacher_Id'";
+
+    $course_Taught = "SELECT DISTINCT department.name as dName,course.course_Name as cn,course.course_Code as cc,coursetaught.session,coursetaught.year,courseTaught.course_Taught_Id FROM`coursetaken`,`coursetaught`,`program`,`department`,
+                `course` ,`feedback_receiveables`,`teacher`WHERE teacher.teacher_Id=coursetaught.teacher_Id AND 
+                 coursetaught.course_Code=course.course_Code AND course.department_Id=department.department_Id AND feedback_receiveables.issued_By='$teacher_Id'AND  coursetaught.teacher_Id='$teacher_Id'  ORDER BY closing_date DESC";
     $result = $conn->query($course_Taught);
     $r = "";
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $course_Taught_Id  = $row["course_Taught_Id"];
-            $course_Code = $row["course_Code"];
             $year = $row["year"];
             $session = $row["session"];
-                    
-            $course = "SELECT `course_Name`, `course_Code`  FROM `course` WHERE `department_Id`='$department_Id'";
-            $courseResult = $conn->query($course);
-            
-            if ($courseResult->num_rows > 0) {
-                while ($rowCourse = $courseResult->fetch_assoc()) {
-                    $course_Name = $rowCourse['course_Name'];
-                    $course_Code = $rowCourse['course_Code'];
-                   
-                    $teacher = "SELECT `name`,`department_Id` FROM `teacher` WHERE `teacher_Id`='$teacher_Id' ";
-                    $teacherResult = $conn->query($teacher);
-                    if ($teacherResult->num_rows > 0) {
-                        while ($rowTeacher = $teacherResult->fetch_assoc()) {
-                            $dept = "SELECT `name` FROM `department` WHERE `department_Id`='$department_Id'";
-                            $dResult = $conn->query($dept);
-                            if ($dResult->num_rows > 0) {
-                                while ($row = $dResult->fetch_assoc()) {
-                                    $dept_Name = $row["name"];
-                                }
-                            }
-                        }
-                    }
-                    $r = $r . '<tr>
+            $course_Name = $row['cn'];
+            $course_Code = $row['cc'];
+            $dept_Name = $row["dName"];
+            $r = $r . '<tr>
                 <td>' . $course_Name . '</td>
                 <td>' . $dept_Name . '</td>
                 <td>' . ucwords($session) . '</td>
@@ -86,23 +68,22 @@ if ($conn->connect_error) {
                 <td>
                 <a class="btn btn-primary" href="issue-feedback.php?course_Taught_Id=' . $course_Taught_Id . '">Add Student</a></td>
             </tr><br>';
-                }
-            }
         }
     }
 }
+
 
 ?>
 
 <body>
 
-     <!-- Navbar -->
-     <?php include './main-nav.php' ?>
-        <!-- /.navbar -->
+    <!-- Navbar -->
+    <?php include './main-nav.php' ?>
+    <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
-        <?php include './main-sidebar.php' ?>
-        <!-- Main SideBar End -->
+    <!-- Main Sidebar Container -->
+    <?php include './main-sidebar.php' ?>
+    <!-- Main SideBar End -->
 
 
 
@@ -144,12 +125,15 @@ if ($conn->connect_error) {
             </div>
         </section>
     </div>
-     <!-- jQuery -->
-     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
 
     <!-- jQuery library file -->
@@ -160,7 +144,8 @@ if ($conn->connect_error) {
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
     </script>
 
-    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
+    <script src=//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin=anonymous>
     </script>
 
 
@@ -170,26 +155,26 @@ if ($conn->connect_error) {
 
     <!-- Page specific script -->
     <script>
-        /* Initialization of datatable */
-        $(document).ready(function() {
-            $('#tableID').DataTable({});
-        });
+    /* Initialization of datatable */
+    $(document).ready(function() {
+        $('#tableID').DataTable({});
+    });
     </script>
     <script>
-        $("button").on("click", function() {
-            var id = $(this).data('id');
-            var question = $(this).data('question');
-            var question_Type = $(this).data('qt');
-            var alumni = $(this).data('alumni');
-            var employer = $(this).data('employer');
-            var student = $(this).data('student');
-            var parent = $(this).data('parent');
-            var teacher = $(this).data('teacher');
-            console.log(alumni, employer, student, parent, teacher);
-            $('#question_Id').val(id);
-            $('#question').val(question);
-            $('#question_Type').val(question_Type);
-        });
+    $("button").on("click", function() {
+        var id = $(this).data('id');
+        var question = $(this).data('question');
+        var question_Type = $(this).data('qt');
+        var alumni = $(this).data('alumni');
+        var employer = $(this).data('employer');
+        var student = $(this).data('student');
+        var parent = $(this).data('parent');
+        var teacher = $(this).data('teacher');
+        console.log(alumni, employer, student, parent, teacher);
+        $('#question_Id').val(id);
+        $('#question').val(question);
+        $('#question_Type').val(question_Type);
+    });
     </script>
 </body>
 
